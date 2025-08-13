@@ -1,0 +1,36 @@
+/* ===== Base theme & typography (clean, trustworthy) ===== */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+
+:root{
+  /* Neutre, corporate */
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --text: #111827;          /* slate-900 */
+  --muted-text: #6b7280;    /* slate-500 */
+  --border: #e5e7eb;        /* slate-200 */
+
+  /* Accent discret */
+  --primary: #2563eb;       /* blue-600 */
+  --primary-700: #1d4ed8;   /* hover */
+  --ring: rgba(37, 99, 235, 0.18);
+
+  /* Feedback */
+  --success: #16a34a;       /* green-600 */
+  --info: #0ea5e9;          /* sky-600 */
+  --danger: #dc2626;        /* red-600 */
+
+  /* Shadow subtil */
+  --shadow: 0 8px 28px rgba(17, 24, 39, .06);
+}
+
+html, body{
+  padding:0; margin:0;
+  background: var(--text);
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  line-height: 1.6;
+}
+
+* { box-sizing:border-box; }
+button, input, select, textarea { font-family: inherit; }
+a { color: inherit; text-decoration: none; }
