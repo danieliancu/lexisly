@@ -110,9 +110,8 @@
 
 .theme{
   margin-top: 14px;
-  border-left: 4px solid var(--primary);
-  background: #f8fafc;
-  color: #334155;
+  background: #334155;
+  color: #f8fafc;
   padding: 14px 16px;
   border-radius: 12px;
   animation: fadeIn .25s ease both;
