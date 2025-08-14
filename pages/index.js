@@ -4,6 +4,7 @@ import styles from '../styles/Home.module.css';
 import {
   FileText, Target, Drama, Search, UserRound, Menu, X, ChevronDown, Sparkles
 } from "lucide-react";
+import Link from "next/link";
 
 /**
  * ========= Mini i18n (scalabil pentru viitor / DB) =========
@@ -1305,90 +1306,127 @@ export default function Home() {
 
   return (
     <div className={styles.wrapper}>
-      {/* Header  */}
+
+      {/* Header */}
       <header className={styles.header}>
         <div className={styles.topbar}>
-          <a href="/" className={styles.brandLink} aria-label="Home">
+          {/* Brand (Home) */}
+          <Link
+            href="/"
+            className={styles.brandLink}
+            aria-label="Home"
+            onClick={() => setMobileOpen(false)}
+          >
             <span className={styles.brandDot} aria-hidden="true">
               <Sparkles size={27} strokeWidth={2.4} />
             </span>
             <span className={styles.title}>{L.ui.siteTitle}</span>
-          </a>
+          </Link>
 
-          {/* Acțiuni rapide — rămân mereu vizibile (desktop + mobil) */}
+          {/* Acțiuni rapide — mereu vizibile (desktop + mobil) */}
           <div className={styles.navRight} aria-label="Quick actions">
             <button className={styles.iconBtn} aria-label="Search">
-              <Search size={20}/>
+              <Search size={20} />
             </button>
             <button className={styles.iconBtn} aria-label="Login">
-              <UserRound size={20}/>
+              <UserRound size={20} />
             </button>
           </div>
 
-          {/* Hamburger — doar pe mobil (existent) */}
+          {/* Hamburger — doar pe mobil (CSS ascunde pe desktop) */}
           <button
             className={styles.menuBtn}
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={mobileOpen ? 'true' : 'false'}
-            onClick={() => setMobileOpen(v => !v)}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen ? "true" : "false"}
+            onClick={() => setMobileOpen((v) => !v)}
           >
-            {mobileOpen ? <X size={22}/> : <Menu size={22}/>}
+            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
 
           {/* Nav (fără navRight în interior) */}
-          <nav className={`${styles.nav} ${mobileOpen ? styles.navOpen : ''}`}>
+          <nav className={`${styles.nav} ${mobileOpen ? styles.navOpen : ""}`}>
             <ul className={styles.navLinks} role="menubar">
               <li>
-                <a href="/" className={styles.navLink} role="menuitem" onClick={()=>setMobileOpen(false)}>
+                <Link
+                  href="/"
+                  className={styles.navLink}
+                  role="menuitem"
+                  onClick={() => setMobileOpen(false)}
+                >
                   {L.ui.menuHome}
-                </a>
+                </Link>
               </li>
 
+              {/* Resources (meniul are același design ca Languages) */}
               <li className={styles.dropdown} role="none">
                 <button
                   type="button"
                   className={styles.dropdownBtn}
                   aria-haspopup="true"
-                  aria-expanded={resourcesOpen ? 'true' : 'false'}
-                  onClick={() => setResourcesOpen(v => !v)}
+                  aria-expanded={resourcesOpen ? "true" : "false"}
+                  onClick={() => setResourcesOpen((v) => !v)}
                 >
                   {L.ui.menuResources} <ChevronDown size={16} />
                 </button>
-                <ul className={`${styles.dropdownMenu} ${resourcesOpen ? styles.dropdownOpen : ''}`} role="menu">
+                <ul
+                  className={`${styles.dropdownMenu} ${
+                    resourcesOpen ? styles.dropdownOpen : ""
+                  }`}
+                  role="menu"
+                >
                   <li role="none">
-                    <a role="menuitem" href="/resources/vocabulary" className={styles.dropdownItem}
-                      onClick={()=>setMobileOpen(false)}>
+                    <Link
+                      role="menuitem"
+                      href="/resources/vocabulary"
+                      className={styles.dropdownItem}
+                      onClick={() => setMobileOpen(false)}
+                    >
                       {L.ui.menuVocabulary}
-                    </a>
+                    </Link>
                   </li>
                   <li role="none">
-                    <a role="menuitem" href="/resources/grammar" className={styles.dropdownItem}
-                      onClick={()=>setMobileOpen(false)}>
+                    <Link
+                      role="menuitem"
+                      href="/resources/grammar"
+                      className={styles.dropdownItem}
+                      onClick={() => setMobileOpen(false)}
+                    >
                       {L.ui.menuGrammar}
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </li>
 
               <li>
-                <a href="/faq" className={styles.navLink} role="menuitem" onClick={()=>setMobileOpen(false)}>
+                <Link
+                  href="/faq"
+                  className={styles.navLink}
+                  role="menuitem"
+                  onClick={() => setMobileOpen(false)}
+                >
                   {L.ui.menuFAQ}
-                </a>
+                </Link>
               </li>
 
+              {/* Languages (afișează limba curentă; o exclude din listă) */}
               <li className={styles.dropdown} role="none">
                 <button
                   type="button"
                   className={styles.dropdownBtn}
                   style={{ color:"orange" }}
                   aria-haspopup="true"
-                  aria-expanded={langsOpen ? 'true' : 'false'}
-                  onClick={() => setLangsOpen(v => !v)}
+                  aria-expanded={langsOpen ? "true" : "false"}
+                  onClick={() => setLangsOpen((v) => !v)}
                 >
                   {currentLangLabel} <ChevronDown size={16} />
                 </button>
-                <ul className={`${styles.dropdownMenu} ${langsOpen ? styles.dropdownOpen : ''}`} role="menu">
-                  {LANG_ORDER.filter(code => code !== lang).map(code => (
+                <ul
+                  className={`${styles.dropdownMenu} ${
+                    langsOpen ? styles.dropdownOpen : ""
+                  }`}
+                  role="menu"
+                >
+                  {LANG_ORDER.filter((code) => code !== lang).map((code) => (
                     <li role="none" key={code}>
                       <button
                         role="menuitem"
@@ -1408,6 +1446,7 @@ export default function Home() {
 
         <p className={styles.subtitle}>{L.ui.subtitle}</p>
       </header>
+
 
 
       {/* Categories */}
