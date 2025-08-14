@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from '../styles/Home.module.css';
 import {
-  FileText, Target, Drama, Search, UserRound, Menu, X, ChevronDown, Sparkles, Wand2
+  FileText, Target, Drama, Search, UserRound, Menu, X, ChevronDown, Wand2
 } from "lucide-react";
 import Link from "next/link";
 
@@ -1321,9 +1321,6 @@ export default function Home() {
             aria-label="Home"
             onClick={() => setMobileOpen(false)}
           >
-            <span className={styles.brandDot} aria-hidden="true">
-              <Sparkles size={27} strokeWidth={2.4} />
-            </span>
             <span className={styles.title}>{L.ui.siteTitle}</span>
           </Link>
 
