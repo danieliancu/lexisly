@@ -135,6 +135,9 @@
 
 /* ===== Responsive (mobil) ===== */
 @media (max-width: 860px){
+  .subtitle{
+    font-size:12px;
+  }  
   .menuBtn{ display:block; }
   .topbar{
     flex-direction: column; align-items: stretch; gap:10px;
