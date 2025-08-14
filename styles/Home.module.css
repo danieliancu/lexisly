@@ -11,6 +11,7 @@
   background: var(--text);
   padding: 16px 0 10px;
   opacity: .9;
+  margin: 20px 0 0 0;
 }
 
 /* Rândul de sus: logo (stânga) + meniu (dreapta) */
@@ -58,6 +59,7 @@
 
 /* pe mobil, lasă loc pentru hamburger-ul fix din dreapta */
 @media (max-width: 860px){
+  .header{margin:0;}
   .navRight{ padding-right: 60px; } /* 40px btn + ~20px spațiu */
 }
 .navLinks{
@@ -107,7 +109,7 @@
   padding:8px 10px;
   border:none; border-radius:10px;
   background: transparent;            /* same look for <a> and <button> */
-  color:#e5e7eb; text-decoration:none; font-weight:600;
+  color:#e5e7eb; text-decoration:none; font-weight:400;
   cursor:pointer;
 }
 .dropdownItem:hover{ background: rgba(255,255,255,.06); color:#fff; }
@@ -129,7 +131,7 @@
 .subtitle{
   color: var(--muted-text);
   font-weight: 400;
-  margin: 8px 0 18px;
+  margin: 8px 0;
   font-size:14px;
 }
 
@@ -139,9 +141,8 @@
     font-size:12px;
   }  
   .menuBtn{ display:block; }
-  .topbar{
-    flex-direction: column; align-items: stretch; gap:10px;
-  }
+ .topbar{ align-items: stretch; gap:10px; }
+ .topbarOpen{ flex-direction: column; }  /* <— hamburger ON */
   .nav{
     display:block;
     border-top:1px solid rgba(255,255,255,.12);
@@ -199,10 +200,6 @@
   scroll-snap-type: x proximity;
   white-space: nowrap;
 
-  /* scroll shadow hint */
-  box-shadow:
-    inset 24px 0 24px -24px rgba(0,0,0,.08),
-    inset -24px 0 24px -24px rgba(0,0,0,.08);
 }
 .segmentTop::-webkit-scrollbar,
 .segmentBottom::-webkit-scrollbar{ height:8px }
@@ -228,7 +225,6 @@
   background: var(--primary, #3b82f6);
   border-color: var(--primary, #3b82f6);
   color:#fff;
-  box-shadow: 0 8px 22px var(--ring, rgba(59,130,246,.25));
 }
 .pillCategoryActive:hover{
   background: var(--primary-700, #1d4ed8);
@@ -238,29 +234,23 @@
 /* Bottom: scenarios */
 .pill{
   flex:0 0 auto;
-  border: 1px solid var(--border);
   color: #374151;
-  padding: 10px 14px;
-  border-radius: 999px;
+  padding: 0px 10px 5px 10px;
   background: #ffffff;
   cursor: pointer;
   transition: background .2s ease, transform .12s ease, border-color .15s ease, box-shadow .15s ease;
   scroll-snap-align: start;
   font-size: 12px;
+  border: none;
 }
 .pill:hover{ background:#f9fafb; border-color:#d1d5db; }
 
 /* ACTIVE pe albastru (jos) */
 .pillActive{
-  background: var(--primary, #3b82f6);
-  border-color: var(--primary, #3b82f6);
-  color:#fff;
-  box-shadow: 0 8px 22px var(--ring, rgba(59,130,246,.25));
+  color: #3b82f6;
+  font-weight:800;
 }
-.pillActive:hover{
-  background: var(--primary-700, #1d4ed8);
-  border-color: var(--primary-700, #1d4ed8);
-}
+
 
 
 /* ===== Theme card ===== */
@@ -289,13 +279,13 @@
 .themeHeader{
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 15px;
 }
 
 /* ===== Controls + editor ===== */
 .controls{
   display:flex; align-items:center; gap:12px;
-  margin: 18px 0 12px;
+  margin: 0px 0 12px;
 }
 .sampleBtn{
   margin-left:auto;

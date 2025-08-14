@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from '../styles/Home.module.css';
 import {
-  FileText, Target, Drama, Search, UserRound, Menu, X, ChevronDown, Sparkles
+  FileText, Target, Drama, Search, UserRound, Menu, X, ChevronDown, Sparkles, Wand2
 } from "lucide-react";
 import Link from "next/link";
 
@@ -15,8 +15,9 @@ import Link from "next/link";
 const I18N = {
   fr: {
     ui: {
+      generate: 'Générer',
       siteTitle: 'lexisly.com',
-      subtitle: 'Écrivez naturellement. Recevez des corrections professionnelles.',
+      subtitle: 'Apprenez Français à travers des conversations réelles.',
       menuHome: 'Accueil',
       menuResources: 'Ressources',
       menuVocabulary: 'Vocabulaire',
@@ -28,7 +29,7 @@ const I18N = {
       langRo: 'Română',
       langDe: 'Deutsch',
       editorLabel: 'Votre message',
-      useSample: "Utiliser l’exemple (test)",
+      useSample: "Utiliser l’exemple",
       placeholder: 'Écrivez votre message ici…',
       cta: 'Corriger mon français',
       analyzing: 'Analyse en cours…',
@@ -316,8 +317,9 @@ const I18N = {
   },
   en: {
     ui: {
+      generate: 'Generate',
       siteTitle: 'lexisly.com',
-      subtitle: 'Write naturally. Receive professional corrections.',
+      subtitle: 'Learn English through real-life conversations.',
       menuHome: 'Home',
       menuResources: 'Resources',
       menuVocabulary: 'Vocabulary',
@@ -359,8 +361,9 @@ const I18N = {
   },
   ro: {
   ui: {
+    generate: 'Generează',
     siteTitle: 'lexisly.com',
-    subtitle: 'Scrie natural. Primește corecturi profesionale.',
+    subtitle: 'Învață românește prin conversații din viața reală.',
     menuHome: 'Acasă',
     menuResources: 'Resurse',
     menuVocabulary: 'Vocabular',
@@ -372,7 +375,7 @@ const I18N = {
     langRo: 'Română',
     langDe: 'Deutsch',
     editorLabel: 'Mesajul tău',
-    useSample: 'Folosește exemplul (test)',
+    useSample: 'Folosește exemplul',
     placeholder: 'Scrie mesajul aici…',
     cta: 'Corectează-mi româna',
     analyzing: 'Analiză în curs…',
@@ -667,8 +670,9 @@ scenarios: {
 },
 de: {
   ui: {
+    generate: 'Generieren',
     siteTitle: 'lexisly.com',
-    subtitle: 'Schreiben Sie natürlich. Erhalten Sie professionelle Korrekturen.',
+    subtitle: 'Lerne Sprachen Deutsch aus dem echten Leben.',
     menuHome: 'Startseite',
     menuResources: 'Ressourcen',
     menuVocabulary: 'Wortschatz',
@@ -680,7 +684,7 @@ de: {
     langRo: 'Română',
     langDe: 'Deutsch',
     editorLabel: 'Ihre Nachricht',
-    useSample: 'Beispiel verwenden (Test)',
+    useSample: 'Beispiel verwenden',
     placeholder: 'Schreiben Sie hier Ihre Nachricht…',
     cta: 'Mein Deutsch korrigieren',
     analyzing: 'Analyse läuft…',
@@ -1309,7 +1313,7 @@ export default function Home() {
 
       {/* Header */}
       <header className={styles.header}>
-        <div className={styles.topbar}>
+        <div className={`${styles.topbar} ${mobileOpen ? styles.topbarOpen : ''}`}>
           {/* Brand (Home) */}
           <Link
             href="/"
@@ -1464,6 +1468,9 @@ export default function Home() {
               {c.label}
             </button>
           ))}
+          <button style={{ background:"orange", display:"flex", gap:"10px",alignItems:"center", color: "white" }} className={`${styles.pillCategory}`}>
+            <Wand2 size={16} /> {L.ui.generate}
+          </button>
         </div>
 
         {/* Scenarios */}
@@ -1483,6 +1490,21 @@ export default function Home() {
             ) : (
               <div className={styles.emptyHint}>{L.ui.noScenarios}</div>
             )}
+            <button style={{
+              display:"flex",
+              gap:"5px",
+              alignItems:"center",
+              background:"orange",
+              color: "white",
+              fontWeight:700,
+              borderRadius: 20,
+              padding: "6px 16px",
+              margin:"-5px",
+            }}
+              className={`${styles.pill}`}
+            >
+              <Wand2 size={14} /> {L.ui.generate}
+          </button>
           </div>
         </div>
       </div>
