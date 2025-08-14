@@ -4,15 +4,15 @@
 :root{
   /* Neutre, corporate */
   --bg: #f5f7fb;
+  --text: #0b1020;
   --surface: #ffffff;
-  --text: #111827;          /* slate-900 */
-  --muted-text: #6b7280;    /* slate-500 */
-  --border: #e5e7eb;        /* slate-200 */
+  --border: #e5e7eb;
+  --muted-text: grey;
 
-  /* Accent discret */
-  --primary: #2563eb;       /* blue-600 */
-  --primary-700: #1d4ed8;   /* hover */
-  --ring: rgba(37, 99, 235, 0.18);
+  /* brand */
+  --primary: #3b82f6;        /* blue-500 */
+  --primary-700: #1d4ed8;    /* blue-700 */
+  --ring: rgba(59,130,246,.25);
 
   /* Feedback */
   --success: #16a34a;       /* green-600 */

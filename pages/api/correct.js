@@ -1,4 +1,5 @@
-// ✅ Forțează bodyParser doar pe această rută (indiferent ce ai global)
+// pages/api/correct.js
+
 export const config = {
   api: { bodyParser: { sizeLimit: '1mb' } }
 };
@@ -9,16 +10,13 @@ export default async function handler(req, res) {
   if (!process.env.OPENAI_API_KEY) {
     return res.status(500).json({ error: 'Missing OPENAI_API_KEY on server' });
   }
-  
-    console.log('[correct] CT:', req.headers['content-type'], 'BODY_TYPE:', typeof req.body);
 
-  // --- Citește corpul în mod robust (object / string / stream) ---
+  // Parse robust
   let body = req.body;
   if (!body || typeof body === 'string') {
     try { body = body ? JSON.parse(body) : body; } catch {}
   }
   if (!body || typeof body !== 'object') {
-    // Fallback: citește stream-ul (dacă bodyParser e off global)
     body = await new Promise((resolve) => {
       let raw = '';
       req.setEncoding('utf8');
@@ -30,40 +28,102 @@ export default async function handler(req, res) {
     });
   }
 
-
- // 👇 LOG 3: după ce ai un body (sau nu), vezi cheile primite
-  console.log('[correct] PARSED_BODY_TYPE:', typeof body, 'KEYS:', body && Object.keys(body));
-
-
-  const { text, scenario } = body || {};
+  const { text, scenario, lang = 'fr' } = body || {};
   if (!text || typeof text !== 'string') {
     return res.status(400).json({
       error: 'Missing "text" string.',
-      hint: 'Trimite JSON: { "text": "…", "scenario": "…" } cu Content-Type: application/json'
+      hint: 'JSON: { "text": "…", "scenario": "…", "lang": "fr|en" } with Content-Type: application/json'
     });
   }
 
-// ... restul codului tău rămâne identic, doar schimbă textul `system`:
+  const defaultScenarioLabel = (lng) => {
+  if (lng === 'fr') return 'Message professionnel (général)';
+  if (lng === 'ro') return 'Mesaj profesional (general)';
+  if (lng === 'de') return 'Berufliche Nachricht (allgemein)';
+  return 'General workplace message';
+};
 
-const system = `You are a precise English writing coach for workplace chats and emails.
-GOAL: Correct the user's message while keeping meaning and intent. Make it natural and professional at CEFR B2–C1.
+
+  // —— Prompt builder by language (scalable) ——
+const systemFor = (lng) => {
+  if (lng === 'en') {
+    return `
+You are a precise **English** writing coach for workplace chats and emails.
+GOAL: Correct the user's message in **English** while keeping meaning and intent. Natural, professional, CEFR B2–C1.
+
 REQUIREMENTS:
-- Return strict JSON with keys: corrected, mistakes[], alternatives[], scores{clarity,correctness,tone}.
-- In "mistakes", classify type ∈ {grammar, agreement, spelling, word-choice, register, tone, punctuation, style}.
+- Return **strict JSON** (nothing else) with keys: corrected, mistakes[], alternatives[], scores{clarity,correctness,tone}.
+- mistakes[] items look like: { "type", "original", "fix", "explanation" }.
+- "type" ∈ { "grammar", "agreement", "spelling", "word-choice", "register", "tone", "punctuation", "style" }.
+- Prefer concise, natural phrasing for professional contexts.
 - Keep the original voice and brevity; do not add content that wasn't implied.
-- Prefer concise, natural phrasing over literal translations.
-- If there are NO real mistakes, still return one item in mistakes with:
+- If there are NO real mistakes, still return one item:
   {"type":"style","original":"—","fix":"—","explanation":"No significant errors; minor stylistic choices only."}
-- Never include extra commentary outside the JSON.`;
+- All explanations and alternatives must be in **English**. No text outside the JSON.
+`.trim();
+  }
+
+  if (lng === 'ro') {
+    return `
+Ești un antrenor precis de scriere în **română** pentru chat-uri și e-mailuri profesionale.
+OBIECTIV: Corectează mesajul utilizatorului în **română**, menținând sensul și intenția. Natural, profesional, nivel CECR B2–C1.
+
+CERINȚE:
+- Răspunde în **JSON strict** (nimic în plus) cu cheile: corrected, mistakes[], alternatives[], scores{clarity,correctness,tone}.
+- Fiecare element din mistakes[] arată așa: { "type", "original", "fix", "explanation" }.
+- "type" ∈ { "gramatică", "acord", "ortografie", "alegere-lexicală", "registru", "ton", "punctuație", "stil" }.
+- Preferă formulări **concise și naturale** (context profesional).
+- Păstrează vocea și concizia originală; nu adăuga conținut neimplicat.
+- Dacă nu există erori reale, întoarce totuși:
+  {"type":"stil","original":"—","fix":"—","explanation":"Nicio eroare semnificativă; doar alegeri stilistice minore."}
+- Toate explicațiile/alternativele sunt în **română**. Fără text în afara JSON-ului.
+`.trim();
+  }
+
+  if (lng === 'de') {
+    return `
+Du bist ein präziser **deutscher** Schreibcoach für berufliche Chats und E-Mails.
+ZIEL: Korrigiere die Nachricht des Nutzers auf **Deutsch**, mit gleicher Bedeutung und Intention. Natürlich, professionell, GER B2–C1.
+
+ANFORDERUNGEN:
+- Antworte mit **strengem JSON** (nichts anderes) mit den Schlüsseln: corrected, mistakes[], alternatives[], scores{clarity,correctness,tone}.
+- mistakes[]-Items: { "type", "original", "fix", "explanation" }.
+- "type" ∈ { "Grammatik", "Kongruenz", "Rechtschreibung", "Wortwahl", "Register", "Ton", "Zeichensetzung", "Stil" }.
+- Bevorzuge **knappe, natürliche** Formulierungen (beruflicher Kontext).
+- Stimme und Kürze des Originals beibehalten; keinen nicht implizierten Inhalt hinzufügen.
+- Wenn es **keine** echten Fehler gibt, gib trotzdem zurück:
+  {"type":"Stil","original":"—","fix":"—","explanation":"Keine bedeutenden Fehler; nur kleinere stilistische Entscheidungen."}
+- Alle Erklärungen/Alternativen auf **Deutsch**. Kein Text außerhalb des JSON.
+`.trim();
+  }
+
+  // default: French
+  return `
+Tu es un coach d’écriture **française** précis pour tchats et e-mails professionnels.
+OBJECTIF : Corriger le texte de l’utilisateur en **français**, en gardant le sens et l’intention. Style naturel, niveau CECR B2–C1.
+
+EXIGENCES :
+- Réponds en **strict JSON** (rien d’autre) avec ces clés : corrected, mistakes[], alternatives[], scores{clarity,correctness,tone}.
+- Dans mistakes[], chaque item = { "type", "original", "fix", "explanation" }.
+- Taxonomie "type" ∈ { "grammaire", "accord", "orthographe", "choix-lexical", "registre", "ton", "ponctuation", "style" }.
+- Reformule de façon **concise et naturelle** (contexte pro).
+- Garde la voix et la brièveté d’origine ; n’ajoute pas de contenu non implicite.
+- Si **aucune** vraie erreur : retourne au moins un item
+  {"type":"style","original":"—","fix":"—","explanation":"Aucune erreur significative ; seulement des choix stylistiques mineurs."}
+- Toutes les explications/alternatives sont en **français**. Pas de texte hors JSON.
+`.trim();
+};
 
 
-  const user = `SCENARIO: ${scenario || 'General workplace message'}
+const user = `
+SCENARIO: ${scenario || defaultScenarioLabel(lang)}
+TARGET_LANG: ${lang}
 USER_TEXT:
 ${text}
-`;
+`.trim();
+
 
   try {
-    // Timeout defensiv
     const controller = new AbortController();
     const t = setTimeout(() => controller.abort(), 30000);
 
@@ -75,10 +135,10 @@ ${text}
         'Accept': 'application/json'
       },
       body: JSON.stringify({
-                model: "gpt-4o-mini",
+        model: "gpt-4o-mini",
         temperature: 0.2,
         messages: [
-          { role: 'system', content: system },
+          { role: 'system', content: systemFor(lang) },
           { role: 'user', content: user }
         ]
       }),
