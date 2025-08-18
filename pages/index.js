@@ -2,7 +2,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from '../styles/Home.module.css';
 import {
-  FileText, Target, Drama, Search, UserRound, Menu, X, ChevronDown, Wand2
+  FileText, Target, Drama, Search, UserRound, Menu, X, ChevronDown, Wand2,
+  MessageSquare, CheckCircle2, Repeat
 } from "lucide-react";
 import Link from "next/link";
 
@@ -18,6 +19,7 @@ const I18N = {
       generate: 'Générer',
       siteTitle: 'lexisly.com',
       subtitle: 'Apprenez Français à travers des conversations réelles.',
+      subsubtitle:'Simulateur de conversations réelles pour l’apprentissage des langues étrangères. Progrès mesurables, retour instantané et recommandations personnalisées.',
       menuHome: 'Accueil',
       menuResources: 'Ressources',
       menuVocabulary: 'Vocabulaire',
@@ -313,13 +315,104 @@ const I18N = {
         tone: `Poli et prudent.`,
         sample: `Y a-t-il des avis pour la Thaïlande en novembre ?`
       }
-    }
+    },
+    marketing: {
+      why: {
+        title: 'Pourquoi nous choisir ?',
+        bullets: [
+          {
+            title: 'Pratique comme dans la vraie vie',
+            desc: 'Scénarios dynamiques : entretien, négociation, voyage, support, santé — comme en situation réelle.',
+            icon: MessageSquare
+          },
+          { 
+            title: 'Un feedback utile',
+            desc: 'Corrections instantanées, prononciation, tournures naturelles, ton et suggestions de réponse.' ,
+            icon: CheckCircle2
+          },
+          { title: 'Conçu pour la régularité', 
+            desc: 'Bibliothèque de scénarios, objectifs quotidiens, progrès mesurables, recommandations selon le niveau.',
+            icon: Repeat
+          }
+        ],
+      },
+      how: {
+        title: 'Comment ça marche',
+        steps: [
+          { title: 'Choisissez un scénario', desc: 'Sélectionnez un thème et un objectif (ex. entretien, support, voyage).' },
+          { title: 'Parlez ou écrivez', desc: 'Échangez par texte ou voix ; l’IA joue des rôles réalistes.' },
+          { title: 'Retour instantané', desc: 'Corrections, alternatives, conseils de prononciation et de ton.' },
+          { title: 'Suivez vos progrès', desc: 'Scores clarté/correction/ton, historique et objectifs.' }
+        ]
+      },
+      pricing: {
+        title: 'Formules',
+        note: 'Changez à tout moment. Free sans carte.',
+        plans: [
+          {
+            id: 'free', name: 'Free', price: '$0', period: '/mois', cta: 'Commencer', badge: 'Start',
+            features: [
+              'Pratique texte illimitée',
+              '10 jeux de rôle IA / mois',
+              'Corrections de base (grammaire, orthographe)',
+              'Tableau de bord de progression'
+            ],
+            footnote: 'Sans retour vocal ; catalogue limité de scénarios.'
+          },
+          {
+            id: 'premium', name: 'Premium', price: '$12', period: '/mois', cta: 'Passer en Premium', badge: 'IA',
+            features: [
+              'Tout ce qui est dans Free',
+              'Jeux de rôle IA illimités',
+              'Feedback voix & prononciation',
+              'Suggestions contextuelles',
+              'Analytique avancée & objectifs',
+              'Support prioritaire'
+            ],
+            footnote: 'Résiliable à tout moment. Remises équipes disponibles.'
+          }
+        ]
+      },
+      faq: {
+        title: 'Questions fréquentes (FAQ)',
+        items: [
+          { q: 'Que se passe-t-il après la période gratuite ?',
+            a: 'Rien de dramatique — vous restez sur l’offre Free. Vous pouvez passer en Premium à tout moment pour des jeux de rôle IA illimités et un feedback vocal.' },
+          { q: 'Comment l’IA m’aide à apprendre plus vite ?',
+            a: 'Elle corrige instantanément, propose des formulations naturelles et des conseils personnalisés selon vos erreurs et objectifs.' },
+          { q: 'Puis-je utiliser l’application sur mobile ?',
+            a: 'Oui. L’app web fonctionne sur téléphone et tablette. Une app native est en préparation.' },
+        ]
+      },
+      ctaFinal: {
+        title: 'Commencez aujourd’hui à apprendre comme dans la vraie vie !',
+        subtitle: 'Rejoignez des milliers d’apprenants qui progressent grâce à des conversations réalistes.',
+        button: 'Créer un compte gratuit'
+      },
+      blog: {
+        title: 'Ressources & Conseils',
+        posts: [
+          { title: 'Mémoriser du vocabulaire plus vite',
+            desc: '5 routines simples à démarrer cette semaine.',
+            href: '/blog/memoriser-vocabulaire' },
+          { title: 'Les erreurs de prononciation les plus courantes',
+            desc: 'Corrigez les 7 sons qui posent le plus problème.',
+            href: '/blog/erreurs-prononciation' },
+          { title: 'Structurer une réponse STAR en entretien',
+            desc: 'Modèle + exemples concrets en 3 minutes.',
+            href: '/blog/methode-star-entretien' }
+        ]
+      },
+    },
   },
+
+
   en: {
     ui: {
       generate: 'Generate',
       siteTitle: 'lexisly.com',
       subtitle: 'Learn English through real-life conversations.',
+      subsubtitle: 'Simulator for learning foreign languages: measurable progress, instant feedback, and personalized recommendations.',
       menuHome: 'Home',
       menuResources: 'Resources',
       menuVocabulary: 'Vocabulary',
@@ -357,322 +450,521 @@ const I18N = {
       health: 'Health',
       travel: 'Travel',
     },
-    scenarios: {} // (fallback to EN base where no localized copy yet)
+    scenarios: {},// (fallback to EN base where no localized copy yet)
+    // în I18N.en
+    marketing: {
+      why: {
+        title: 'Why choose us?',
+        bullets: [
+          { 
+            title: 'Live-like practice',
+            desc: 'Dynamic scenarios: interviews, negotiations, travel, support, healthcare — just like real life.', 
+            icon: MessageSquare
+          },
+          { 
+            title: 'Feedback that matters',
+            desc: 'Instant corrections, pronunciation tips, natural phrasing, tone guidance and reply suggestions.', 
+            icon: CheckCircle2
+          },
+          { 
+            title: 'Built for consistency', 
+            desc: 'Scenario library, daily goals, measurable progress, level-based recommendations.', 
+            icon: Repeat
+          }
+        ]
+      },
+      how: {
+        title: 'How it works',
+        steps: [
+          { title: 'Pick a scenario', desc: 'Choose a theme and goal (e.g., interview, support, travel).' },
+          { title: 'Speak or type', desc: 'Chat by text or voice; AI role-plays realistic counterparts.' },
+          { title: 'Get instant guidance', desc: 'Corrections, alternatives, pronunciation and tone tips.' },
+          { title: 'Track your progress', desc: 'Scores for clarity/correctness/tone, history and goals.' }
+        ]
+      },
+      pricing: {
+        title: 'Plans',
+        note: 'Switch anytime. Free requires no card.',
+        plans: [
+          {
+            id: 'free', name: 'Free', price: '$0', period: '/mo', cta: 'Start free', badge: 'Start',
+            features: [
+              'Unlimited text practice',
+              '10 AI role-plays / month',
+              'Basic corrections (grammar, spelling)',
+              'Progress dashboard'
+            ],
+            footnote: 'No speech feedback; limited scenario catalog.'
+          },
+          {
+            id: 'premium', name: 'Premium', price: '$12', period: '/mo', cta: 'Go Premium', badge: 'AI',
+            features: [
+              'Everything in Free',
+              'Unlimited AI role-plays',
+              'Speaking & pronunciation feedback',
+              'Context-aware suggestions',
+              'Advanced analytics & goals',
+              'Priority support'
+            ],
+            footnote: 'Cancel anytime. Team discounts available.'
+          }
+        ]
+      },
+      faq: {
+        title: 'FAQ',
+        items: [
+          { q: 'What happens after the free period?',
+            a: 'Nothing scary — you stay on the Free plan. Upgrade to Premium anytime for unlimited AI role-plays and voice feedback.' },
+          { q: 'How does AI help me learn faster?',
+            a: 'It gives instant corrections, natural phrasing, and personalized tips based on your mistakes and goals.' },
+          { q: 'Can I use it on mobile?',
+            a: 'Yes. The web app works on phones and tablets. A native app is in the works.' },
+        ]
+      },
+      ctaFinal: {
+        title: 'Start learning like in real life — today!',
+        subtitle: 'Join thousands of learners improving with realistic conversations.',
+        button: 'Create a free account'
+      },
+      blog: {
+        title: 'Resources & Tips',
+        posts: [
+          { title: 'Memorize vocabulary faster',
+            desc: '5 simple routines to start this week.',
+            href: '/blog/memorize-vocabulary-faster' },
+          { title: 'Common pronunciation mistakes',
+            desc: 'Fix the 7 sounds learners struggle with.',
+            href: '/blog/common-pronunciation-mistakes' },
+          { title: 'Structure a STAR interview answer',
+            desc: 'Template + concrete examples in 3 minutes.',
+            href: '/blog/star-interview-answer' },
+        ]
+      },
+
+
+    },
+
   },
+
+
   ro: {
-  ui: {
-    generate: 'Generează',
-    siteTitle: 'lexisly.com',
-    subtitle: 'Învață românește prin conversații din viața reală.',
-    menuHome: 'Acasă',
-    menuResources: 'Resurse',
-    menuVocabulary: 'Vocabular',
-    menuGrammar: 'Gramatică',
-    menuFAQ: 'Întrebări frecvente',
-    menuLanguages: 'Limbi',
-    langFr: 'Français',
-    langEn: 'English',
-    langRo: 'Română',
-    langDe: 'Deutsch',
-    editorLabel: 'Mesajul tău',
-    useSample: 'Folosește exemplul',
-    placeholder: 'Scrie mesajul aici…',
-    cta: 'Corectează-mi româna',
-    analyzing: 'Analiză în curs…',
-    corrected: 'Corectare',
-    mistakes: 'Greșeli',
-    alternatives: 'Alternative',
-    scores: 'Scoruri',
-    clarity: 'Claritate',
-    correctness: 'Corectitudine',
-    tone: 'Ton',
-    noAlternatives: 'Nicio alternativă.',
-    noScenarios: 'Nu există scenarii în această categorie.',
-    style: 'stil',
-    noSignificantErrors: 'Nicio eroare semnificativă; doar alegeri stilistice minore.',
-    categoriesAria: 'File de categorii',
-    scenariosAria: 'Scenarii în',
-  },
-  categories: {
-    work: 'Muncă',
-    family: 'Familie',
-    shopping: 'Cumpărături',
-    holiday: 'Vacanță',
-    health: 'Sănătate',
-    travel: 'Călătorii',
-  },
-scenarios: {
-  // --- Muncă ---
-  'support-invoice': {
-    label: 'Suport clienți – Reducere pe factură',
-    theme: 'Ești agent de suport. Un client raportează că reducerea flash de 10% nu apare pe factura MMC.',
-    goal: 'Cere facturării să investigheze, confirmă prețul așteptat și indică pașii următori.',
-    tone: 'Politicos și concis.',
-    sample: 'Am nevoie de ajutor: reducerea flash -10% nu apare pe factura MMC; Karen se plânge.'
-  },
-  'interview': {
-    label: 'Interviu – Întrebare comportamentală',
-    theme: 'Răspunzi la „Povestește-mi despre o dată când ai gestionat un stakeholder dificil”.',
-    goal: 'Folosește structura STAR pentru a explica situația în 120–160 de cuvinte.',
-    tone: 'Profesional și pozitiv.',
-    sample: 'Aveam un stakeholder care schimba scope-ul săptămânal și eu...'
-  },
-  'standup': {
-    label: 'Stand-up zilnic – Progres & blocaje',
-    theme: 'Stand-up zilnic cu echipa.',
-    goal: 'Spune ce ai făcut ieri, ce faci azi și blocajele, în maximum 80 de cuvinte.',
-    tone: 'Concis și factual.',
-    sample: 'Ieri am terminat ecranul de factură. Azi integrare API. Blocaj la auth.'
-  },
-  'negotiate-priority': {
-    label: 'Negociază prioritatea unei sarcini',
-    theme: 'Vrei ca un coleg să prioritizeze un bug în locul unei funcții cu impact redus.',
-    goal: 'Explică impactul, propune un calendar și cere confirmarea.',
-    tone: 'Ferm, dar respectuos.',
-    sample: 'Putem prioritiza bug-ul de checkout înaintea bannerului nou? Afectează plățile.'
-  },
-  'project-deadline': {
-    label: 'Extindere termen proiect',
-    theme: 'Ceri o extindere de termen.',
-    goal: 'Explică motivele întârzierii, propune o dată nouă și arată planul de finalizare.',
-    tone: 'Profesional și orientat pe soluții.',
-    sample: 'Din cauza unor probleme tehnice neprevăzute, solicit extinderea termenului cu o săptămână.'
-  },
-  'new-hire-intro': {
-    label: 'Prezintă un coleg nou',
-    theme: 'Prezinți un nou coleg echipei.',
-    goal: 'Rol, experiență și contribuție.',
-    tone: 'Cald și informativ.',
-    sample: 'Îl întâmpinăm pe John, noul nostru backend dev cu 5 ani experiență în Node.js.'
-  },
+    ui: {
+      generate: 'Generează',
+      siteTitle: 'lexisly.com',
+      subtitle: 'Învață românește prin conversații din viața reală.',
+      subsubtitle: 'Simulator de conversații reale pentru învățarea limbilor străine. Progres măsurabil, feedback instant și recomandări personalizate.',
+      menuHome: 'Acasă',
+      menuResources: 'Resurse',
+      menuVocabulary: 'Vocabular',
+      menuGrammar: 'Gramatică',
+      menuFAQ: 'Întrebări frecvente',
+      menuLanguages: 'Limbi',
+      langFr: 'Français',
+      langEn: 'English',
+      langRo: 'Română',
+      langDe: 'Deutsch',
+      editorLabel: 'Mesajul tău',
+      useSample: 'Folosește exemplul',
+      placeholder: 'Scrie mesajul aici…',
+      cta: 'Corectează-mi româna',
+      analyzing: 'Analiză în curs…',
+      corrected: 'Corectare',
+      mistakes: 'Greșeli',
+      alternatives: 'Alternative',
+      scores: 'Scoruri',
+      clarity: 'Claritate',
+      correctness: 'Corectitudine',
+      tone: 'Ton',
+      noAlternatives: 'Nicio alternativă.',
+      noScenarios: 'Nu există scenarii în această categorie.',
+      style: 'stil',
+      noSignificantErrors: 'Nicio eroare semnificativă; doar alegeri stilistice minore.',
+      categoriesAria: 'File de categorii',
+      scenariosAria: 'Scenarii în',
+    },
+    categories: {
+      work: 'Muncă',
+      family: 'Familie',
+      shopping: 'Cumpărături',
+      holiday: 'Vacanță',
+      health: 'Sănătate',
+      travel: 'Călătorii',
+    },
+    scenarios: {
+      // --- Muncă ---
+      'support-invoice': {
+        label: 'Suport clienți – Reducere pe factură',
+        theme: 'Ești agent de suport. Un client raportează că reducerea flash de 10% nu apare pe factura MMC.',
+        goal: 'Cere facturării să investigheze, confirmă prețul așteptat și indică pașii următori.',
+        tone: 'Politicos și concis.',
+        sample: 'Am nevoie de ajutor: reducerea flash -10% nu apare pe factura MMC; Karen se plânge.'
+      },
+      'interview': {
+        label: 'Interviu – Întrebare comportamentală',
+        theme: 'Răspunzi la „Povestește-mi despre o dată când ai gestionat un stakeholder dificil”.',
+        goal: 'Folosește structura STAR pentru a explica situația în 120–160 de cuvinte.',
+        tone: 'Profesional și pozitiv.',
+        sample: 'Aveam un stakeholder care schimba scope-ul săptămânal și eu...'
+      },
+      'standup': {
+        label: 'Stand-up zilnic – Progres & blocaje',
+        theme: 'Stand-up zilnic cu echipa.',
+        goal: 'Spune ce ai făcut ieri, ce faci azi și blocajele, în maximum 80 de cuvinte.',
+        tone: 'Concis și factual.',
+        sample: 'Ieri am terminat ecranul de factură. Azi integrare API. Blocaj la auth.'
+      },
+      'negotiate-priority': {
+        label: 'Negociază prioritatea unei sarcini',
+        theme: 'Vrei ca un coleg să prioritizeze un bug în locul unei funcții cu impact redus.',
+        goal: 'Explică impactul, propune un calendar și cere confirmarea.',
+        tone: 'Ferm, dar respectuos.',
+        sample: 'Putem prioritiza bug-ul de checkout înaintea bannerului nou? Afectează plățile.'
+      },
+      'project-deadline': {
+        label: 'Extindere termen proiect',
+        theme: 'Ceri o extindere de termen.',
+        goal: 'Explică motivele întârzierii, propune o dată nouă și arată planul de finalizare.',
+        tone: 'Profesional și orientat pe soluții.',
+        sample: 'Din cauza unor probleme tehnice neprevăzute, solicit extinderea termenului cu o săptămână.'
+      },
+      'new-hire-intro': {
+        label: 'Prezintă un coleg nou',
+        theme: 'Prezinți un nou coleg echipei.',
+        goal: 'Rol, experiență și contribuție.',
+        tone: 'Cald și informativ.',
+        sample: 'Îl întâmpinăm pe John, noul nostru backend dev cu 5 ani experiență în Node.js.'
+      },
 
-  // --- Familie ---
-  'landlord-boiler': {
-    label: 'Sună proprietarul – Problemă la centrală',
-    theme: 'Ești chiriaș, centrala s-a oprit aseară.',
-    goal: 'Solicită o vizită urgentă azi sau mâine și confirmă intervalele disponibile.',
-    tone: 'Ferm, dar politicos.',
-    sample: 'Bună ziua, centrala nu mai funcționează de aseară. Puteți veni azi?'
-  },
-  'teacher-meeting': {
-    label: 'Școală – Întâlnire părinte–profesor',
-    theme: 'Vrei să discuți progresul la citit al copilului.',
-    goal: 'Propune două intervale, cere observații actuale și materiale de pregătire.',
-    tone: 'Prietenos și cooperant.',
-    sample: 'Putem programa o întâlnire scurtă despre progresul la citit al lui Alex?'
-  },
-  'family-reunion': {
-    label: 'Organizează reuniune de familie',
-    theme: 'Planifici o reuniune luna viitoare.',
-    goal: 'Sugerează data/locația și cere preferințe pentru mâncare/activități.',
-    tone: 'Prietenos și incluziv.',
-    sample: 'Mă gândesc la o reuniune de familie pe 15, la noi. Ce părere aveți?'
-  },
-  'babysitting-request': {
-    label: 'Solicitare babysitting',
-    theme: 'Ai nevoie de cineva să stea cu copiii în weekend.',
-    goal: 'Precizează date/ore, vârstele copiilor și remunerația.',
-    tone: 'Politicos și clar.',
-    sample: 'Poți sta cu copiii (5 și 8 ani) sâmbătă seara? Plătesc.'
-  },
-  'pet-care': {
-    label: 'Ajutor cu animalul de companie',
-    theme: 'Ai nevoie de hrănire/plimbare pentru câine cât ești plecat.',
-    goal: 'Listează perioadele, nevoile și remunerația.',
-    tone: 'Prietenos și recunoscător.',
-    sample: 'Ai putea hrăni și plimba pe Max de vineri până duminică?'
-  },
-  'appliance-repair': {
-    label: 'Programare reparație electrocasnic',
-    theme: 'Mașina de spălat s-a stricat.',
-    goal: 'Descrie problema, cere o dată de reparație și întreabă costurile.',
-    tone: 'Politicos, dar urgent.',
-    sample: 'Mașina nu mai stoarce din ieri. O puteți repara săptămâna asta?'
-  },
+      // --- Familie ---
+      'landlord-boiler': {
+        label: 'Sună proprietarul – Problemă la centrală',
+        theme: 'Ești chiriaș, centrala s-a oprit aseară.',
+        goal: 'Solicită o vizită urgentă azi sau mâine și confirmă intervalele disponibile.',
+        tone: 'Ferm, dar politicos.',
+        sample: 'Bună ziua, centrala nu mai funcționează de aseară. Puteți veni azi?'
+      },
+      'teacher-meeting': {
+        label: 'Școală – Întâlnire părinte–profesor',
+        theme: 'Vrei să discuți progresul la citit al copilului.',
+        goal: 'Propune două intervale, cere observații actuale și materiale de pregătire.',
+        tone: 'Prietenos și cooperant.',
+        sample: 'Putem programa o întâlnire scurtă despre progresul la citit al lui Alex?'
+      },
+      'family-reunion': {
+        label: 'Organizează reuniune de familie',
+        theme: 'Planifici o reuniune luna viitoare.',
+        goal: 'Sugerează data/locația și cere preferințe pentru mâncare/activități.',
+        tone: 'Prietenos și incluziv.',
+        sample: 'Mă gândesc la o reuniune de familie pe 15, la noi. Ce părere aveți?'
+      },
+      'babysitting-request': {
+        label: 'Solicitare babysitting',
+        theme: 'Ai nevoie de cineva să stea cu copiii în weekend.',
+        goal: 'Precizează date/ore, vârstele copiilor și remunerația.',
+        tone: 'Politicos și clar.',
+        sample: 'Poți sta cu copiii (5 și 8 ani) sâmbătă seara? Plătesc.'
+      },
+      'pet-care': {
+        label: 'Ajutor cu animalul de companie',
+        theme: 'Ai nevoie de hrănire/plimbare pentru câine cât ești plecat.',
+        goal: 'Listează perioadele, nevoile și remunerația.',
+        tone: 'Prietenos și recunoscător.',
+        sample: 'Ai putea hrăni și plimba pe Max de vineri până duminică?'
+      },
+      'appliance-repair': {
+        label: 'Programare reparație electrocasnic',
+        theme: 'Mașina de spălat s-a stricat.',
+        goal: 'Descrie problema, cere o dată de reparație și întreabă costurile.',
+        tone: 'Politicos, dar urgent.',
+        sample: 'Mașina nu mai stoarce din ieri. O puteți repara săptămâna asta?'
+      },
 
-  // --- Cumpărături ---
-  'refund-online': {
-    label: 'Comandă online – Cerere de rambursare',
-    theme: 'Coletul a sosit deteriorat.',
-    goal: 'Oferă numărul comenzii, descrie problema și cere rambursare sau înlocuire.',
-    tone: 'Neutru și concis.',
-    sample: 'Comanda #10422 a sosit cu folia spartă. Aș dori rambursare sau înlocuire.'
-  },
-  'price-match': {
-    label: 'Întrebare despre preț egalat',
-    theme: 'Ai găsit același produs mai ieftin la concurență.',
-    goal: 'Furnizează dovada, întreabă dacă se aplică preț egalat și pașii necesari.',
-    tone: 'Neutru și direct.',
-    sample: 'Am găsit același model cu 20 £ mai ieftin la RivalTech. Faceți preț egalat?'
-  },
-  'delayed-delivery': {
-    label: 'Reclamație întârziere livrare',
-    theme: 'Comanda nu a sosit la timp.',
-    goal: 'Detalii, dată actualizată de livrare și compensație dacă e cazul.',
-    tone: 'Politicos, dar ferm.',
-    sample: 'Comanda #10987 trebuia ieri și nu a sosit. Aveți o actualizare?'
-  },
-  'product-warranty': {
-    label: 'Garanție produs',
-    theme: 'Produsul s-a defectat în perioada de garanție.',
-    goal: 'Dovadă de cumpărare, descrierea defectului și cerere de reparație/înlocuire.',
-    tone: 'Clar și factual.',
-    sample: 'Aspiratorul (cumpărat în martie) nu pornește. Se poate înlocui?'
-  },
-  'gift-wrap': {
-    label: 'Înfășurare cadou',
-    theme: 'Comanzi un cadou online.',
-    goal: 'Întreabă dacă există opțiune de ambalare cadou și costul.',
-    tone: 'Politicos și concis.',
-    sample: 'Se poate ambala cadou comanda #11223? Există taxă suplimentară?'
-  },
-  'bulk-order': {
-    label: 'Comandă en-gros',
-    theme: 'Vrei să cumperi o cantitate mare.',
-    goal: 'Stoc, discount la volum și termen de livrare.',
-    tone: 'Direct și business.',
-    sample: 'Aș dori 50 de bucăți din articolul #4421. Care e cel mai bun preț?'
-  },
+      // --- Cumpărături ---
+      'refund-online': {
+        label: 'Comandă online – Cerere de rambursare',
+        theme: 'Coletul a sosit deteriorat.',
+        goal: 'Oferă numărul comenzii, descrie problema și cere rambursare sau înlocuire.',
+        tone: 'Neutru și concis.',
+        sample: 'Comanda #10422 a sosit cu folia spartă. Aș dori rambursare sau înlocuire.'
+      },
+      'price-match': {
+        label: 'Întrebare despre preț egalat',
+        theme: 'Ai găsit același produs mai ieftin la concurență.',
+        goal: 'Furnizează dovada, întreabă dacă se aplică preț egalat și pașii necesari.',
+        tone: 'Neutru și direct.',
+        sample: 'Am găsit același model cu 20 £ mai ieftin la RivalTech. Faceți preț egalat?'
+      },
+      'delayed-delivery': {
+        label: 'Reclamație întârziere livrare',
+        theme: 'Comanda nu a sosit la timp.',
+        goal: 'Detalii, dată actualizată de livrare și compensație dacă e cazul.',
+        tone: 'Politicos, dar ferm.',
+        sample: 'Comanda #10987 trebuia ieri și nu a sosit. Aveți o actualizare?'
+      },
+      'product-warranty': {
+        label: 'Garanție produs',
+        theme: 'Produsul s-a defectat în perioada de garanție.',
+        goal: 'Dovadă de cumpărare, descrierea defectului și cerere de reparație/înlocuire.',
+        tone: 'Clar și factual.',
+        sample: 'Aspiratorul (cumpărat în martie) nu pornește. Se poate înlocui?'
+      },
+      'gift-wrap': {
+        label: 'Înfășurare cadou',
+        theme: 'Comanzi un cadou online.',
+        goal: 'Întreabă dacă există opțiune de ambalare cadou și costul.',
+        tone: 'Politicos și concis.',
+        sample: 'Se poate ambala cadou comanda #11223? Există taxă suplimentară?'
+      },
+      'bulk-order': {
+        label: 'Comandă en-gros',
+        theme: 'Vrei să cumperi o cantitate mare.',
+        goal: 'Stoc, discount la volum și termen de livrare.',
+        tone: 'Direct și business.',
+        sample: 'Aș dori 50 de bucăți din articolul #4421. Care e cel mai bun preț?'
+      },
 
-  // --- Vacanță ---
-  'travel-booking': {
-    label: 'Zbor – Buget & date',
-    theme: 'Zbor dus-întors Londra → Madrid luna viitoare.',
-    goal: 'Găsește 2–3 opțiuni sub 180 £, fără escale peste noapte; include regulile de bagaje.',
-    tone: 'Prietenos și clar.',
-    sample: 'Am nevoie de zboruri ieftine Londra–Madrid luna viitoare, te rog.'
-  },
-  'hotel-request': {
-    label: 'Hotel – Cerere specială',
-    theme: 'Vrei cameră liniștită departe de lift.',
-    goal: 'Confirmă rezervarea, cere preferința și întreabă despre check-in timpuriu.',
-    tone: 'Politicos și clar.',
-    sample: 'Rezervare #AB3492, 2 nopți. O cameră liniștită, departe de lift, este posibil?'
-  },
-  'car-rental': {
-    label: 'Închiriere mașină',
-    theme: 'Vrei să închiriezi o mașină.',
-    goal: 'Date ridicare/predare, tip mașină, asigurare.',
-    tone: 'Clar și direct.',
-    sample: 'Mașină mică 3–7 mai în Barcelona. Ce aveți disponibil?'
-  },
-  'tour-booking': {
-    label: 'Rezervare tur ghidat',
-    theme: 'Rezervi un tur de oraș.',
-    goal: 'Date, preț, mărimea grupului, limbi disponibile.',
-    tone: 'Politicos și curios.',
-    sample: 'Aveți tur de oraș la Roma pe 12 mai în engleză?'
-  },
-  'cruise-offer': {
-    label: 'Oferte croazieră',
-    theme: 'Informații despre pachete în Mediterană.',
-    goal: 'Rute, preț, tipuri de cabine, date disponibile.',
-    tone: 'Politicos și interesat.',
-    sample: 'Îmi puteți trimite cele mai bune oferte pentru o croazieră de 7 zile în Mediterană?'
-  },
-  'restaurant-reservation': {
-    label: 'Rezervare restaurant',
-    theme: 'Rezervi o cină în vacanță.',
-    goal: 'Dată/oră, număr persoane, cerințe alimentare.',
-    tone: 'Politicos și prietenos.',
-    sample: 'Masă pentru 4 pe 15 iulie la 19:00, vă rog opțiuni vegetariene.'
-  },
+      // --- Vacanță ---
+      'travel-booking': {
+        label: 'Zbor – Buget & date',
+        theme: 'Zbor dus-întors Londra → Madrid luna viitoare.',
+        goal: 'Găsește 2–3 opțiuni sub 180 £, fără escale peste noapte; include regulile de bagaje.',
+        tone: 'Prietenos și clar.',
+        sample: 'Am nevoie de zboruri ieftine Londra–Madrid luna viitoare, te rog.'
+      },
+      'hotel-request': {
+        label: 'Hotel – Cerere specială',
+        theme: 'Vrei cameră liniștită departe de lift.',
+        goal: 'Confirmă rezervarea, cere preferința și întreabă despre check-in timpuriu.',
+        tone: 'Politicos și clar.',
+        sample: 'Rezervare #AB3492, 2 nopți. O cameră liniștită, departe de lift, este posibil?'
+      },
+      'car-rental': {
+        label: 'Închiriere mașină',
+        theme: 'Vrei să închiriezi o mașină.',
+        goal: 'Date ridicare/predare, tip mașină, asigurare.',
+        tone: 'Clar și direct.',
+        sample: 'Mașină mică 3–7 mai în Barcelona. Ce aveți disponibil?'
+      },
+      'tour-booking': {
+        label: 'Rezervare tur ghidat',
+        theme: 'Rezervi un tur de oraș.',
+        goal: 'Date, preț, mărimea grupului, limbi disponibile.',
+        tone: 'Politicos și curios.',
+        sample: 'Aveți tur de oraș la Roma pe 12 mai în engleză?'
+      },
+      'cruise-offer': {
+        label: 'Oferte croazieră',
+        theme: 'Informații despre pachete în Mediterană.',
+        goal: 'Rute, preț, tipuri de cabine, date disponibile.',
+        tone: 'Politicos și interesat.',
+        sample: 'Îmi puteți trimite cele mai bune oferte pentru o croazieră de 7 zile în Mediterană?'
+      },
+      'restaurant-reservation': {
+        label: 'Rezervare restaurant',
+        theme: 'Rezervi o cină în vacanță.',
+        goal: 'Dată/oră, număr persoane, cerințe alimentare.',
+        tone: 'Politicos și prietenos.',
+        sample: 'Masă pentru 4 pe 15 iulie la 19:00, vă rog opțiuni vegetariene.'
+      },
 
-  // --- Sănătate ---
-  'gp-appointment': {
-    label: 'Programare la medic – Simptome',
-    theme: 'Ai o tuse persistentă de 2 săptămâni.',
-    goal: 'Descrie simptomele, disponibilitatea și ce e necesar pentru programare.',
-    tone: 'Clar și direct.',
-    sample: 'Aș vrea o programare pentru o tuse care durează de două săptămâni.'
-  },
-  'dentist-visit': {
-    label: 'Stomatolog – Control & detartraj',
-    theme: 'Ai nevoie de control și curățare.',
-    goal: 'Cere o dată și întreabă despre asigurare.',
-    tone: 'Politicos și concis.',
-    sample: 'Pot programa o curățare săptămâna viitoare? Acceptați asigurarea AXA?'
-  },
-  'physio-session': {
-    label: 'Ședință fizioterapie',
-    theme: 'Ai nevoie de fizioterapie pentru o accidentare la spate.',
-    goal: 'Disponibilitate, descrierea accidentării, plan de tratament.',
-    tone: 'Politicos și informativ.',
-    sample: 'M-am accidentat la spate. Pot face o ședință de fizioterapie săptămâna aceasta?'
-  },
-  'eye-test': {
-    label: 'Test de vedere',
-    theme: 'Vrei un consult oftalmologic.',
-    goal: 'Cel mai devreme slot, preț, dacă include prescripție.',
-    tone: 'Clar și politicos.',
-    sample: 'Aveți un slot pentru test de vedere mâine după-amiază?'
-  },
-  'nutritionist-consult': {
-    label: 'Consultație nutriționist',
-    theme: 'Consiliere pentru slăbit sănătos.',
-    goal: 'Programare, obiective, pachete.',
-    tone: 'Orientat pe sănătate, politicos.',
-    sample: 'Aș dori o consultație pentru slăbit sănătos.'
-  },
-  'mental-health': {
-    label: 'Sprijin pentru sănătate mintală',
-    theme: 'Cauți consiliere pentru anxietate.',
-    goal: 'Disponibilitatea terapeutului, formatul ședințelor, confidențialitate.',
-    tone: 'Sensibil și respectuos.',
-    sample: 'Puteți recomanda un terapeut pentru ședințe de anxietate?'
-  },
+      // --- Sănătate ---
+      'gp-appointment': {
+        label: 'Programare la medic – Simptome',
+        theme: 'Ai o tuse persistentă de 2 săptămâni.',
+        goal: 'Descrie simptomele, disponibilitatea și ce e necesar pentru programare.',
+        tone: 'Clar și direct.',
+        sample: 'Aș vrea o programare pentru o tuse care durează de două săptămâni.'
+      },
+      'dentist-visit': {
+        label: 'Stomatolog – Control & detartraj',
+        theme: 'Ai nevoie de control și curățare.',
+        goal: 'Cere o dată și întreabă despre asigurare.',
+        tone: 'Politicos și concis.',
+        sample: 'Pot programa o curățare săptămâna viitoare? Acceptați asigurarea AXA?'
+      },
+      'physio-session': {
+        label: 'Ședință fizioterapie',
+        theme: 'Ai nevoie de fizioterapie pentru o accidentare la spate.',
+        goal: 'Disponibilitate, descrierea accidentării, plan de tratament.',
+        tone: 'Politicos și informativ.',
+        sample: 'M-am accidentat la spate. Pot face o ședință de fizioterapie săptămâna aceasta?'
+      },
+      'eye-test': {
+        label: 'Test de vedere',
+        theme: 'Vrei un consult oftalmologic.',
+        goal: 'Cel mai devreme slot, preț, dacă include prescripție.',
+        tone: 'Clar și politicos.',
+        sample: 'Aveți un slot pentru test de vedere mâine după-amiază?'
+      },
+      'nutritionist-consult': {
+        label: 'Consultație nutriționist',
+        theme: 'Consiliere pentru slăbit sănătos.',
+        goal: 'Programare, obiective, pachete.',
+        tone: 'Orientat pe sănătate, politicos.',
+        sample: 'Aș dori o consultație pentru slăbit sănătos.'
+      },
+      'mental-health': {
+        label: 'Sprijin pentru sănătate mintală',
+        theme: 'Cauți consiliere pentru anxietate.',
+        goal: 'Disponibilitatea terapeutului, formatul ședințelor, confidențialitate.',
+        tone: 'Sensibil și respectuos.',
+        sample: 'Puteți recomanda un terapeut pentru ședințe de anxietate?'
+      },
 
-  // --- Călătorii ---
-  'visa-query': {
-    label: 'Viză – Listă documente',
-    theme: 'Ceri informații de la consulat pentru o viză turistică scurtă.',
-    goal: 'Checklist oficial și timpul de procesare.',
-    tone: 'Formal și politicos.',
-    sample: 'Puteți confirma lista de documente pentru o viză de scurt sejur?'
-  },
-  'flight-delay': {
-    label: 'Întârziere zbor',
-    theme: 'Zbor întârziat peste 4 ore.',
-    goal: 'Compensație sau opțiuni de rebooking.',
-    tone: 'Politicos, dar ferm.',
-    sample: 'Zborul EZY456 a întârziat 5 ore. Ce compensații sunt disponibile?'
-  },
-  'lost-luggage': {
-    label: 'Bagaj pierdut',
-    theme: 'Bagajul nu a sosit la destinație.',
-    goal: 'Detalii zbor, descriere bagaj, contact.',
-    tone: 'Clar și factual.',
-    sample: 'Bagaj lipsă de pe zborul BA217. Samsonite neagră, etichetă #9982.'
-  },
-  'travel-insurance-claim': {
-    label: 'Asigurare de călătorie – Dosar daună',
-    theme: 'Vrei să reclami obiecte pierdute în călătorie.',
-    goal: 'Detalii, chitanțe, proces-verbal.',
-    tone: 'Formal și detaliat.',
-    sample: 'Revendicare pentru cameră pierdută la Paris. Atașez raportul poliției.'
-  },
-  'airport-transfer': {
-    label: 'Transfer aeroport',
-    theme: 'Ai nevoie de transport de la aeroport la hotel.',
-    goal: 'Ora sosirii, adresa hotelului, numărul de pasageri.',
-    tone: 'Politicos și clar.',
-    sample: 'Preluare de la Heathrow la 10:00, destinație Hilton Park Lane, 2 pasageri.'
-  },
-  'travel-advisory': {
-    label: 'Alerte de călătorie',
-    theme: 'Verifici actualizări de siguranță pentru o destinație.',
-    goal: 'Riscuri curente, recomandări de sănătate, restricții de intrare.',
-    tone: 'Politicos și precaut.',
-    sample: 'Există alerte pentru călătorie în Thailanda în noiembrie?'
-  }
-}
+      // --- Călătorii ---
+      'visa-query': {
+        label: 'Viză – Listă documente',
+        theme: 'Ceri informații de la consulat pentru o viză turistică scurtă.',
+        goal: 'Checklist oficial și timpul de procesare.',
+        tone: 'Formal și politicos.',
+        sample: 'Puteți confirma lista de documente pentru o viză de scurt sejur?'
+      },
+      'flight-delay': {
+        label: 'Întârziere zbor',
+        theme: 'Zbor întârziat peste 4 ore.',
+        goal: 'Compensație sau opțiuni de rebooking.',
+        tone: 'Politicos, dar ferm.',
+        sample: 'Zborul EZY456 a întârziat 5 ore. Ce compensații sunt disponibile?'
+      },
+      'lost-luggage': {
+        label: 'Bagaj pierdut',
+        theme: 'Bagajul nu a sosit la destinație.',
+        goal: 'Detalii zbor, descriere bagaj, contact.',
+        tone: 'Clar și factual.',
+        sample: 'Bagaj lipsă de pe zborul BA217. Samsonite neagră, etichetă #9982.'
+      },
+      'travel-insurance-claim': {
+        label: 'Asigurare de călătorie – Dosar daună',
+        theme: 'Vrei să reclami obiecte pierdute în călătorie.',
+        goal: 'Detalii, chitanțe, proces-verbal.',
+        tone: 'Formal și detaliat.',
+        sample: 'Revendicare pentru cameră pierdută la Paris. Atașez raportul poliției.'
+      },
+      'airport-transfer': {
+        label: 'Transfer aeroport',
+        theme: 'Ai nevoie de transport de la aeroport la hotel.',
+        goal: 'Ora sosirii, adresa hotelului, numărul de pasageri.',
+        tone: 'Politicos și clar.',
+        sample: 'Preluare de la Heathrow la 10:00, destinație Hilton Park Lane, 2 pasageri.'
+      },
+      'travel-advisory': {
+        label: 'Alerte de călătorie',
+        theme: 'Verifici actualizări de siguranță pentru o destinație.',
+        goal: 'Riscuri curente, recomandări de sănătate, restricții de intrare.',
+        tone: 'Politicos și precaut.',
+        sample: 'Există alerte pentru călătorie în Thailanda în noiembrie?'
+      }
+    },
+    marketing: {
+      why: {
+        title: 'De ce să ne alegi pe noi?',
+        bullets: [
+          {
+            title: 'Exersezi ca în viața reală',
+            desc: 'Scenarii dinamice: interviuri, negocieri, călătorii, suport clienți, sănătate — exact cum le-ai trăi.',
+            icon: MessageSquare
+          },
+          { 
+            title: 'Feedback care contează',
+            desc: 'Corecturi instant, pronunție, formulări naturale, ton adecvat și sugestii de răspuns.',
+            icon: CheckCircle2
+          },
+          {
+            title: 'Creat pentru consecvență', 
+            desc: 'Bibliotecă de scenarii, obiective zilnice, progres măsurabil, recomandări pe nivel.',
+            icon: Repeat
+          }
+        ]
+      },
+      how: {
+        title: 'Cum funcționează',
+        steps: [
+          { title: 'Alegi scenariul', desc: 'Selectezi tema și obiectivul (ex: interviu, suport, călătorie).' },
+          { title: 'Vorbești sau scrii', desc: 'Conversăm prin text sau voce; AI îți joacă roluri reale.' },
+          { title: 'Primești îndrumare instant', desc: 'Corecturi, exemple alternative, tips de pronunție și ton.' },
+          { title: 'Urmărești progresul', desc: 'Scoruri pe claritate/corectitudine/ton, istorice și obiective.' }
+        ]
+      },
+      pricing: {
+        title: 'Planuri',
+        note: 'Poți schimba oricând. Free fără card.',
+        plans: [
+          {
+            id: 'free',
+            name: 'Free',
+            price: '$0',
+            period: '/lună',
+            cta: 'Începe gratuit',
+            badge: 'Start',
+            features: [
+              'Practica nelimitată în text',
+              '10 role-play-uri AI / lună',
+              'Corecturi de bază (gramatică, ortografie)',
+              'Tablou de bord al progresului'
+            ],
+            footnote: 'Fără feedback pe voce; selecție limitată de scenarii.'
+          },
+          {
+            id: 'premium',
+            name: 'Premium',
+            price: '$12',
+            period: '/lună',
+            cta: 'Devino Premium',
+            badge: 'AI',
+            features: [
+              'Tot ce e în Free',
+              'Role-play AI nelimitat',
+              'Feedback pe vorbire & pronunție',
+              'Sugestii conștiente de context',
+              'Analytics avansat & obiective',
+              'Suport prioritar'
+            ],
+            footnote: 'Anulezi oricând. Reduceri pentru echipe disponibile.'
+          }
+        ]
+      },
+      // în I18N.ro.marketing
+      faq: {
+        title: 'Întrebări frecvente (FAQ)',
+        items: [
+          { q: 'Ce se întâmplă după perioada gratuită?',
+            a: 'Rămâi pe planul Free. Poți trece la Premium oricând pentru role-play nelimitat și feedback pe voce.' },
+          { q: 'Cum mă ajută AI-ul să învăț mai rapid?',
+            a: 'Primești corecturi instant, formulări naturale și recomandări personalizate în funcție de greșelile și obiectivele tale.' },
+          { q: 'Pot folosi aplicația pe mobil?',
+            a: 'Da. Web-app-ul funcționează pe telefon și tabletă. O aplicație nativă este în lucru.' },
+        ]
+      },
+      ctaFinal: {
+        title: 'Începe azi să înveți ca în viața reală!',
+        subtitle: 'Alătură-te miilor de cursanți care progresează prin conversații realiste.',
+        button: 'Creează cont gratuit'
+      },
+      blog: {
+        title: 'Blog & Resurse',
+        posts: [
+          { title: 'Cum să reții vocabularul mai ușor',
+            desc: '5 rutine simple pe care le poți începe săptămâna asta.',
+            href: '/blog/retine-vocabularul' },
+          { title: 'Cele mai frecvente greșeli de pronunție',
+            desc: 'Rezolvă cele 7 sunete care dau cel mai des bătăi de cap.',
+            href: '/blog/greseli-pronuntie' },
+          { title: 'Transformă orice chat în repetare spațiată',
+            desc: 'Flux simplu cu etichete și intervale.',
+            href: '/blog/repetare-spatiata-chat' },
+        ]
+      },
 
+    },
 },
+
+
 de: {
   ui: {
     generate: 'Generieren',
     siteTitle: 'lexisly.com',
     subtitle: 'Lerne Sprachen Deutsch aus dem echten Leben.',
+    subsubtitle: 'Echter Konversationssimulator zum Erlernen von Fremdsprachen. Messbarer Fortschritt, sofortiges Feedback und personalisierte Empfehlungen.',
     menuHome: 'Startseite',
     menuResources: 'Ressourcen',
     menuVocabulary: 'Wortschatz',
@@ -710,273 +1002,365 @@ de: {
     health: 'Gesundheit',
     travel: 'Reisen',
   },
-scenarios: {
-  // --- Arbeit ---
-  'support-invoice': {
-    label: 'Kundensupport – Rabatt auf Rechnung',
-    theme: 'Du bist Support-Agent. Ein Kunde meldet, dass der 10%-Flash-Sale nicht auf der MMC-Rechnung erscheint.',
-    goal: 'Die Buchhaltung um Prüfung bitten, erwarteten Preis bestätigen und nächste Schritte nennen.',
-    tone: 'Höflich und prägnant.',
-    sample: 'Bitte um Hilfe: Der -10%-Flash-Sale erscheint nicht auf der MMC-Rechnung; Karen beschwert sich.'
-  },
-  'interview': {
-    label: 'Vorstellungsgespräch – Verhaltensfrage',
-    theme: 'Du beantwortest: „Erzählen Sie von einer Situation mit einem schwierigen Stakeholder.“',
-    goal: 'Mit STAR-Struktur in 120–160 Wörtern erklären.',
-    tone: 'Professionell und positiv.',
-    sample: 'Wir hatten einen Stakeholder, der jede Woche den Scope änderte, und ich...'
-  },
-  'standup': {
-    label: 'Daily Stand-up – Update & Blocker',
-    theme: 'Tägliches Stand-up im Team.',
-    goal: 'Gestern/Heute/Blocker in ≤ 80 Wörtern nennen.',
-    tone: 'Knappt und sachlich.',
-    sample: 'Gestern Rechnungsansicht fertig. Heute API-Integration. Blockiert durch Auth.'
-  },
-  'negotiate-priority': {
-    label: 'Priorität verhandeln',
-    theme: 'Ein Bugfix soll vor einer Low-Impact-Funktion priorisiert werden.',
-    goal: 'Auswirkung erklären, Zeitplan vorschlagen, Bestätigung erfragen.',
-    tone: 'Bestimmt, aber respektvoll.',
-    sample: 'Können wir den Checkout-Bug vor dem neuen Banner priorisieren? Er betrifft Zahlungen.'
-  },
-  'project-deadline': {
-    label: 'Fristverlängerung anfragen',
-    theme: 'Du bittest um Verlängerung einer Projektfrist.',
-    goal: 'Gründe erläutern, neues Datum vorschlagen, Plan darlegen.',
-    tone: 'Professionell, lösungsorientiert.',
-    sample: 'Wegen unvorhergesehener Technikprobleme bitte ich um eine Woche Verlängerung.'
-  },
-  'new-hire-intro': {
-    label: 'Neuen Mitarbeitenden vorstellen',
-    theme: 'Du stellst eine neue Kollegin/einen neuen Kollegen vor.',
-    goal: 'Rolle, Hintergrund, Beitrag skizzieren.',
-    tone: 'Herzlich und informativ.',
-    sample: 'Willkommen John, unser neuer Backend-Entwickler mit 5 Jahren Node.js-Erfahrung.'
-  },
+  scenarios: {
+    // --- Arbeit ---
+    'support-invoice': {
+      label: 'Kundensupport – Rabatt auf Rechnung',
+      theme: 'Du bist Support-Agent. Ein Kunde meldet, dass der 10%-Flash-Sale nicht auf der MMC-Rechnung erscheint.',
+      goal: 'Die Buchhaltung um Prüfung bitten, erwarteten Preis bestätigen und nächste Schritte nennen.',
+      tone: 'Höflich und prägnant.',
+      sample: 'Bitte um Hilfe: Der -10%-Flash-Sale erscheint nicht auf der MMC-Rechnung; Karen beschwert sich.'
+    },
+    'interview': {
+      label: 'Vorstellungsgespräch – Verhaltensfrage',
+      theme: 'Du beantwortest: „Erzählen Sie von einer Situation mit einem schwierigen Stakeholder.“',
+      goal: 'Mit STAR-Struktur in 120–160 Wörtern erklären.',
+      tone: 'Professionell und positiv.',
+      sample: 'Wir hatten einen Stakeholder, der jede Woche den Scope änderte, und ich...'
+    },
+    'standup': {
+      label: 'Daily Stand-up – Update & Blocker',
+      theme: 'Tägliches Stand-up im Team.',
+      goal: 'Gestern/Heute/Blocker in ≤ 80 Wörtern nennen.',
+      tone: 'Knappt und sachlich.',
+      sample: 'Gestern Rechnungsansicht fertig. Heute API-Integration. Blockiert durch Auth.'
+    },
+    'negotiate-priority': {
+      label: 'Priorität verhandeln',
+      theme: 'Ein Bugfix soll vor einer Low-Impact-Funktion priorisiert werden.',
+      goal: 'Auswirkung erklären, Zeitplan vorschlagen, Bestätigung erfragen.',
+      tone: 'Bestimmt, aber respektvoll.',
+      sample: 'Können wir den Checkout-Bug vor dem neuen Banner priorisieren? Er betrifft Zahlungen.'
+    },
+    'project-deadline': {
+      label: 'Fristverlängerung anfragen',
+      theme: 'Du bittest um Verlängerung einer Projektfrist.',
+      goal: 'Gründe erläutern, neues Datum vorschlagen, Plan darlegen.',
+      tone: 'Professionell, lösungsorientiert.',
+      sample: 'Wegen unvorhergesehener Technikprobleme bitte ich um eine Woche Verlängerung.'
+    },
+    'new-hire-intro': {
+      label: 'Neuen Mitarbeitenden vorstellen',
+      theme: 'Du stellst eine neue Kollegin/einen neuen Kollegen vor.',
+      goal: 'Rolle, Hintergrund, Beitrag skizzieren.',
+      tone: 'Herzlich und informativ.',
+      sample: 'Willkommen John, unser neuer Backend-Entwickler mit 5 Jahren Node.js-Erfahrung.'
+    },
 
-  // --- Familie ---
-  'landlord-boiler': {
-    label: 'Vermieter anrufen – Heizung defekt',
-    theme: 'Die Heizung fiel gestern Abend aus.',
-    goal: 'Dringenden Termin heute/morgen anfragen und Zeitfenster bestätigen.',
-    tone: 'Bestimmt, aber höflich.',
-    sample: 'Hallo, die Heizung funktioniert seit gestern Abend nicht. Können Sie heute vorbeikommen?'
-  },
-  'teacher-meeting': {
-    label: 'Schule – Eltern-Lehrer-Gespräch',
-    theme: 'Du willst die Lesefortschritte deines Kindes besprechen.',
-    goal: 'Zwei Termine vorschlagen, aktuelle Beobachtungen und Materialien erfragen.',
-    tone: 'Freundlich und kooperativ.',
-    sample: 'Können wir kurz über Alex’ Lesefortschritt sprechen und einen Termin finden?'
-  },
-  'family-reunion': {
-    label: 'Familientreffen organisieren',
-    theme: 'Du planst ein Treffen nächsten Monat.',
-    goal: 'Datum/Ort vorschlagen, Essens-/Aktivitätswünsche erfragen.',
-    tone: 'Freundlich und inklusiv.',
-    sample: 'Ich plane ein Familientreffen am 15. bei uns. Was meint ihr?'
-  },
-  'babysitting-request': {
-    label: 'Babysitting anfragen',
-    theme: 'Du brauchst am Wochenende Kinderbetreuung.',
-    goal: 'Daten/Uhren, Alter der Kinder, Bezahlung nennen.',
-    tone: 'Höflich und klar.',
-    sample: 'Könntest du Samstagabend auf die Kinder (5 & 8) aufpassen?'
-  },
-  'pet-care': {
-    label: 'Haustierbetreuung erbitten',
-    theme: 'Du brauchst Füttern/Spazieren mit dem Hund während deiner Abwesenheit.',
-    goal: 'Zeitraum, Bedürfnisse, Vergütung nennen.',
-    tone: 'Freundlich und dankbar.',
-    sample: 'Könntest du Max von Freitag bis Sonntag füttern und ausführen?'
-  },
-  'appliance-repair': {
-    label: 'Gerätereparatur vereinbaren',
-    theme: 'Die Waschmaschine ist kaputt.',
-    goal: 'Problem schildern, Reparaturtermin anfragen, Kosten erfragen.',
-    tone: 'Höflich, aber dringend.',
-    sample: 'Die Maschine schleudert seit gestern nicht. Können Sie diese Woche reparieren?'
-  },
+    // --- Familie ---
+    'landlord-boiler': {
+      label: 'Vermieter anrufen – Heizung defekt',
+      theme: 'Die Heizung fiel gestern Abend aus.',
+      goal: 'Dringenden Termin heute/morgen anfragen und Zeitfenster bestätigen.',
+      tone: 'Bestimmt, aber höflich.',
+      sample: 'Hallo, die Heizung funktioniert seit gestern Abend nicht. Können Sie heute vorbeikommen?'
+    },
+    'teacher-meeting': {
+      label: 'Schule – Eltern-Lehrer-Gespräch',
+      theme: 'Du willst die Lesefortschritte deines Kindes besprechen.',
+      goal: 'Zwei Termine vorschlagen, aktuelle Beobachtungen und Materialien erfragen.',
+      tone: 'Freundlich und kooperativ.',
+      sample: 'Können wir kurz über Alex’ Lesefortschritt sprechen und einen Termin finden?'
+    },
+    'family-reunion': {
+      label: 'Familientreffen organisieren',
+      theme: 'Du planst ein Treffen nächsten Monat.',
+      goal: 'Datum/Ort vorschlagen, Essens-/Aktivitätswünsche erfragen.',
+      tone: 'Freundlich und inklusiv.',
+      sample: 'Ich plane ein Familientreffen am 15. bei uns. Was meint ihr?'
+    },
+    'babysitting-request': {
+      label: 'Babysitting anfragen',
+      theme: 'Du brauchst am Wochenende Kinderbetreuung.',
+      goal: 'Daten/Uhren, Alter der Kinder, Bezahlung nennen.',
+      tone: 'Höflich und klar.',
+      sample: 'Könntest du Samstagabend auf die Kinder (5 & 8) aufpassen?'
+    },
+    'pet-care': {
+      label: 'Haustierbetreuung erbitten',
+      theme: 'Du brauchst Füttern/Spazieren mit dem Hund während deiner Abwesenheit.',
+      goal: 'Zeitraum, Bedürfnisse, Vergütung nennen.',
+      tone: 'Freundlich und dankbar.',
+      sample: 'Könntest du Max von Freitag bis Sonntag füttern und ausführen?'
+    },
+    'appliance-repair': {
+      label: 'Gerätereparatur vereinbaren',
+      theme: 'Die Waschmaschine ist kaputt.',
+      goal: 'Problem schildern, Reparaturtermin anfragen, Kosten erfragen.',
+      tone: 'Höflich, aber dringend.',
+      sample: 'Die Maschine schleudert seit gestern nicht. Können Sie diese Woche reparieren?'
+    },
 
-  // --- Einkauf ---
-  'refund-online': {
-    label: 'Onlinebestellung – Rückerstattung',
-    theme: 'Paket beschädigt angekommen.',
-    goal: 'Bestellnummer, Problem beschreiben, Erstattung/Ersatz erbitten.',
-    tone: 'Neutral und knapp.',
-    sample: 'Bestellung #10422: Schutzglas gerissen. Bitte Rückerstattung oder Ersatz.'
-  },
-  'price-match': {
-    label: 'Preisangleichung anfragen',
-    theme: 'Gleicher Artikel beim Mitbewerber günstiger gefunden.',
-    goal: 'Nachweis schicken, klären ob Preisangleichung gilt und wie vorgehen.',
-    tone: 'Neutral und direkt.',
-    sample: 'Gleiches Modell 20 £ günstiger bei RivalTech. Bieten Sie Preisangleichung an?'
-  },
-  'delayed-delivery': {
-    label: 'Verspätete Lieferung',
-    theme: 'Bestellung nicht rechtzeitig angekommen.',
-    goal: 'Details, neues Lieferdatum, ggf. Entschädigung erfragen.',
-    tone: 'Höflich, aber bestimmt.',
-    sample: 'Bestellung #10987 sollte gestern kommen. Haben Sie ein Update?'
-  },
-  'product-warranty': {
-    label: 'Gewährleistung / Garantie',
-    theme: 'Produkt innerhalb der Garantie defekt.',
-    goal: 'Kaufbeleg, Fehlerbeschreibung, Reparatur/Ersatz anfragen.',
-    tone: 'Klar und sachlich.',
-    sample: 'Mein Staubsauger (Kauf im März) startet nicht mehr. Austausch möglich?'
-  },
-  'gift-wrap': {
-    label: 'Geschenkverpackung',
-    theme: 'Du bestellst ein Geschenk online.',
-    goal: 'Nach Geschenkverpackung und eventuellen Kosten fragen.',
-    tone: 'Höflich und kurz.',
-    sample: 'Können Sie Bestellung #11223 als Geschenk verpacken? Gibt es eine Gebühr?'
-  },
-  'bulk-order': {
-    label: 'Großbestellung anfragen',
-    theme: 'Du willst eine große Menge kaufen.',
-    goal: 'Verfügbarkeit, Mengenrabatt, Lieferzeit erfragen.',
-    tone: 'Geschäftlich und direkt.',
-    sample: 'Ich möchte 50 Stück von Artikel #4421 bestellen. Bester Preis?'
-  },
+    // --- Einkauf ---
+    'refund-online': {
+      label: 'Onlinebestellung – Rückerstattung',
+      theme: 'Paket beschädigt angekommen.',
+      goal: 'Bestellnummer, Problem beschreiben, Erstattung/Ersatz erbitten.',
+      tone: 'Neutral und knapp.',
+      sample: 'Bestellung #10422: Schutzglas gerissen. Bitte Rückerstattung oder Ersatz.'
+    },
+    'price-match': {
+      label: 'Preisangleichung anfragen',
+      theme: 'Gleicher Artikel beim Mitbewerber günstiger gefunden.',
+      goal: 'Nachweis schicken, klären ob Preisangleichung gilt und wie vorgehen.',
+      tone: 'Neutral und direkt.',
+      sample: 'Gleiches Modell 20 £ günstiger bei RivalTech. Bieten Sie Preisangleichung an?'
+    },
+    'delayed-delivery': {
+      label: 'Verspätete Lieferung',
+      theme: 'Bestellung nicht rechtzeitig angekommen.',
+      goal: 'Details, neues Lieferdatum, ggf. Entschädigung erfragen.',
+      tone: 'Höflich, aber bestimmt.',
+      sample: 'Bestellung #10987 sollte gestern kommen. Haben Sie ein Update?'
+    },
+    'product-warranty': {
+      label: 'Gewährleistung / Garantie',
+      theme: 'Produkt innerhalb der Garantie defekt.',
+      goal: 'Kaufbeleg, Fehlerbeschreibung, Reparatur/Ersatz anfragen.',
+      tone: 'Klar und sachlich.',
+      sample: 'Mein Staubsauger (Kauf im März) startet nicht mehr. Austausch möglich?'
+    },
+    'gift-wrap': {
+      label: 'Geschenkverpackung',
+      theme: 'Du bestellst ein Geschenk online.',
+      goal: 'Nach Geschenkverpackung und eventuellen Kosten fragen.',
+      tone: 'Höflich und kurz.',
+      sample: 'Können Sie Bestellung #11223 als Geschenk verpacken? Gibt es eine Gebühr?'
+    },
+    'bulk-order': {
+      label: 'Großbestellung anfragen',
+      theme: 'Du willst eine große Menge kaufen.',
+      goal: 'Verfügbarkeit, Mengenrabatt, Lieferzeit erfragen.',
+      tone: 'Geschäftlich und direkt.',
+      sample: 'Ich möchte 50 Stück von Artikel #4421 bestellen. Bester Preis?'
+    },
 
-  // --- Urlaub ---
-  'travel-booking': {
-    label: 'Flug – Budget & Daten',
-    theme: 'Rückflug London → Madrid nächsten Monat.',
-    goal: '2–3 Optionen < £180, keine Übernacht-Stopps, Gepäckregeln einbeziehen.',
-    tone: 'Freundlich und klar.',
-    sample: 'Ich brauche günstige Flüge London–Madrid nächsten Monat, bitte.'
-  },
-  'hotel-request': {
-    label: 'Hotel – Sonderwunsch',
-    theme: 'Ruhiges Zimmer fern vom Aufzug.',
-    goal: 'Buchung bestätigen, Wunschzimmer anfragen, Early Check-in klären.',
-    tone: 'Höflich und klar.',
-    sample: 'Buchung #AB3492 für 2 Nächte. Ein ruhiges Zimmer fern vom Aufzug möglich?'
-  },
-  'car-rental': {
-    label: 'Mietwagen anfragen',
-    theme: 'Du möchtest einen Wagen mieten.',
-    goal: 'Abholung/Rückgabe, Fahrzeugtyp, Versicherung erfragen.',
-    tone: 'Klar und direkt.',
-    sample: 'Kleiner Wagen vom 3.–7. Mai in Barcelona. Was ist verfügbar?'
-  },
-  'tour-booking': {
-    label: 'Stadtführung buchen',
-    theme: 'Du buchst eine Stadtführung.',
-    goal: 'Datum, Preis, Gruppengröße, Sprachen erfragen.',
-    tone: 'Höflich und neugierig.',
-    sample: 'Gibt es am 12. Mai eine Tour in Rom auf Englisch?'
-  },
-  'cruise-offer': {
-    label: 'Kreuzfahrtangebote',
-    theme: 'Infos zu Mittelmeer-Kreuzfahrten.',
-    goal: 'Routen, Preis, Kabinenoptionen, Termine.',
-    tone: 'Höflich und interessiert.',
-    sample: 'Bitte beste Angebote für eine 7-tägige Mittelmeer-Kreuzfahrt senden.'
-  },
-  'restaurant-reservation': {
-    label: 'Restaurantreservierung',
-    theme: 'Du reservierst ein Abendessen im Urlaub.',
-    goal: 'Datum/Uhrzeit, Gästezahl, Ernährungswünsche.',
-    tone: 'Höflich und freundlich.',
-    sample: 'Tisch für 4 am 15. Juli um 19 Uhr, bitte mit vegetarischen Optionen.'
-  },
+    // --- Urlaub ---
+    'travel-booking': {
+      label: 'Flug – Budget & Daten',
+      theme: 'Rückflug London → Madrid nächsten Monat.',
+      goal: '2–3 Optionen < £180, keine Übernacht-Stopps, Gepäckregeln einbeziehen.',
+      tone: 'Freundlich und klar.',
+      sample: 'Ich brauche günstige Flüge London–Madrid nächsten Monat, bitte.'
+    },
+    'hotel-request': {
+      label: 'Hotel – Sonderwunsch',
+      theme: 'Ruhiges Zimmer fern vom Aufzug.',
+      goal: 'Buchung bestätigen, Wunschzimmer anfragen, Early Check-in klären.',
+      tone: 'Höflich und klar.',
+      sample: 'Buchung #AB3492 für 2 Nächte. Ein ruhiges Zimmer fern vom Aufzug möglich?'
+    },
+    'car-rental': {
+      label: 'Mietwagen anfragen',
+      theme: 'Du möchtest einen Wagen mieten.',
+      goal: 'Abholung/Rückgabe, Fahrzeugtyp, Versicherung erfragen.',
+      tone: 'Klar und direkt.',
+      sample: 'Kleiner Wagen vom 3.–7. Mai in Barcelona. Was ist verfügbar?'
+    },
+    'tour-booking': {
+      label: 'Stadtführung buchen',
+      theme: 'Du buchst eine Stadtführung.',
+      goal: 'Datum, Preis, Gruppengröße, Sprachen erfragen.',
+      tone: 'Höflich und neugierig.',
+      sample: 'Gibt es am 12. Mai eine Tour in Rom auf Englisch?'
+    },
+    'cruise-offer': {
+      label: 'Kreuzfahrtangebote',
+      theme: 'Infos zu Mittelmeer-Kreuzfahrten.',
+      goal: 'Routen, Preis, Kabinenoptionen, Termine.',
+      tone: 'Höflich und interessiert.',
+      sample: 'Bitte beste Angebote für eine 7-tägige Mittelmeer-Kreuzfahrt senden.'
+    },
+    'restaurant-reservation': {
+      label: 'Restaurantreservierung',
+      theme: 'Du reservierst ein Abendessen im Urlaub.',
+      goal: 'Datum/Uhrzeit, Gästezahl, Ernährungswünsche.',
+      tone: 'Höflich und freundlich.',
+      sample: 'Tisch für 4 am 15. Juli um 19 Uhr, bitte mit vegetarischen Optionen.'
+    },
 
-  // --- Gesundheit ---
-  'gp-appointment': {
-    label: 'Hausarzttermin – Symptome',
-    theme: 'Anhaltender Husten seit 2 Wochen.',
-    goal: 'Symptome, Verfügbarkeit, benötigte Unterlagen nennen.',
-    tone: 'Klar und direkt.',
-    sample: 'Ich hätte gern einen Termin wegen eines seit zwei Wochen anhaltenden Hustens.'
-  },
-  'dentist-visit': {
-    label: 'Zahnarzt – Kontrolle & Reinigung',
-    theme: 'Du brauchst Check-up und Reinigung.',
-    goal: 'Termin anfragen, Versicherung klären.',
-    tone: 'Höflich und knapp.',
-    sample: 'Kann ich nächste Woche zur Zahnreinigung kommen? Akzeptieren Sie AXA?'
-  },
-  'physio-session': {
-    label: 'Physiotherapie',
-    theme: 'Du brauchst Physio wegen einer Rückenverletzung.',
-    goal: 'Verfügbarkeit, Verletzung beschreiben, Behandlungsplan erfragen.',
-    tone: 'Höflich und informativ.',
-    sample: 'Ich habe mir den Rücken verletzt. Haben Sie diese Woche Termine frei?'
-  },
-  'eye-test': {
-    label: 'Sehtest buchen',
-    theme: 'Du willst eine Augenuntersuchung.',
-    goal: 'Frühester Termin, Preis, ob Rezept enthalten.',
-    tone: 'Klar und höflich.',
-    sample: 'Haben Sie morgen Nachmittag einen Termin für einen Sehtest?'
-  },
-  'nutritionist-consult': {
-    label: 'Ernährungsberatung',
-    theme: 'Du willst Beratung zum gesunden Abnehmen.',
-    goal: 'Termin, Ziele, Pakete erfragen.',
-    tone: 'Gesundheitsorientiert und höflich.',
-    sample: 'Ich möchte eine Beratung zum gesunden Abnehmen vereinbaren.'
-  },
-  'mental-health': {
-    label: 'Mentale Gesundheit – Unterstützung',
-    theme: 'Du suchst Sitzungen wegen Angst.',
-    goal: 'Verfügbarkeit, Format, Vertraulichkeit klären.',
-    tone: 'Sensibel und respektvoll.',
-    sample: 'Können Sie eine*n Therapeut*in für Angstsitzungen empfehlen?'
-  },
+    // --- Gesundheit ---
+    'gp-appointment': {
+      label: 'Hausarzttermin – Symptome',
+      theme: 'Anhaltender Husten seit 2 Wochen.',
+      goal: 'Symptome, Verfügbarkeit, benötigte Unterlagen nennen.',
+      tone: 'Klar und direkt.',
+      sample: 'Ich hätte gern einen Termin wegen eines seit zwei Wochen anhaltenden Hustens.'
+    },
+    'dentist-visit': {
+      label: 'Zahnarzt – Kontrolle & Reinigung',
+      theme: 'Du brauchst Check-up und Reinigung.',
+      goal: 'Termin anfragen, Versicherung klären.',
+      tone: 'Höflich und knapp.',
+      sample: 'Kann ich nächste Woche zur Zahnreinigung kommen? Akzeptieren Sie AXA?'
+    },
+    'physio-session': {
+      label: 'Physiotherapie',
+      theme: 'Du brauchst Physio wegen einer Rückenverletzung.',
+      goal: 'Verfügbarkeit, Verletzung beschreiben, Behandlungsplan erfragen.',
+      tone: 'Höflich und informativ.',
+      sample: 'Ich habe mir den Rücken verletzt. Haben Sie diese Woche Termine frei?'
+    },
+    'eye-test': {
+      label: 'Sehtest buchen',
+      theme: 'Du willst eine Augenuntersuchung.',
+      goal: 'Frühester Termin, Preis, ob Rezept enthalten.',
+      tone: 'Klar und höflich.',
+      sample: 'Haben Sie morgen Nachmittag einen Termin für einen Sehtest?'
+    },
+    'nutritionist-consult': {
+      label: 'Ernährungsberatung',
+      theme: 'Du willst Beratung zum gesunden Abnehmen.',
+      goal: 'Termin, Ziele, Pakete erfragen.',
+      tone: 'Gesundheitsorientiert und höflich.',
+      sample: 'Ich möchte eine Beratung zum gesunden Abnehmen vereinbaren.'
+    },
+    'mental-health': {
+      label: 'Mentale Gesundheit – Unterstützung',
+      theme: 'Du suchst Sitzungen wegen Angst.',
+      goal: 'Verfügbarkeit, Format, Vertraulichkeit klären.',
+      tone: 'Sensibel und respektvoll.',
+      sample: 'Können Sie eine*n Therapeut*in für Angstsitzungen empfehlen?'
+    },
 
-  // --- Reisen ---
-  'visa-query': {
-    label: 'Visum – Dokumentencheckliste',
-    theme: 'Info vom Konsulat für ein kurzes Touristenvisum.',
-    goal: 'Offizielle Checkliste und Bearbeitungszeit bestätigen.',
-    tone: 'Formell und höflich.',
-    sample: 'Können Sie die Dokumentenliste für ein Kurzaufenthaltsvisum bestätigen?'
+    // --- Reisen ---
+    'visa-query': {
+      label: 'Visum – Dokumentencheckliste',
+      theme: 'Info vom Konsulat für ein kurzes Touristenvisum.',
+      goal: 'Offizielle Checkliste und Bearbeitungszeit bestätigen.',
+      tone: 'Formell und höflich.',
+      sample: 'Können Sie die Dokumentenliste für ein Kurzaufenthaltsvisum bestätigen?'
+    },
+    'flight-delay': {
+      label: 'Flugverspätung',
+      theme: 'Dein Flug war über 4 Stunden verspätet.',
+      goal: 'Entschädigung oder Umbuchungsoptionen erfragen.',
+      tone: 'Höflich, aber bestimmt.',
+      sample: 'Flug EZY456 hatte 5 Stunden Verspätung. Welche Entschädigung ist möglich?'
+    },
+    'lost-luggage': {
+      label: 'Verlorenes Gepäck',
+      theme: 'Gepäck ist nicht angekommen.',
+      goal: 'Flugdaten, Gepäckbeschreibung, Kontakt angeben.',
+      tone: 'Klar und sachlich.',
+      sample: 'Gepäck fehlt aus Flug BA217. Schwarze Samsonite, Tag #9982.'
+    },
+    'travel-insurance-claim': {
+      label: 'Reiseversicherung – Schadenmeldung',
+      theme: 'Du meldest verlorene Gegenstände auf Reisen.',
+      goal: 'Details, Belege, Polizeibericht.',
+      tone: 'Formell und detailliert.',
+      sample: 'Schadenmeldung für verlorene Kamera in Paris. Polizeibericht beigefügt.'
+    },
+    'airport-transfer': {
+      label: 'Flughafentransfer',
+      theme: 'Du brauchst einen Transfer vom Flughafen zum Hotel.',
+      goal: 'Ankunftszeit, Hoteladresse, Anzahl der Passagiere.',
+      tone: 'Höflich und klar.',
+      sample: 'Abholung Heathrow um 10 Uhr, Ziel Hilton Park Lane, 2 Passagiere.'
+    },
+    'travel-advisory': {
+      label: 'Reisehinweise erfragen',
+      theme: 'Sicherheitsupdates für ein Reiseziel prüfen.',
+      goal: 'Aktuelle Risiken, Gesundheitsratschläge, Einreisebeschränkungen.',
+      tone: 'Höflich und vorsichtig.',
+      sample: 'Gibt es Reisehinweise für Thailand im November?'
+    }
   },
-  'flight-delay': {
-    label: 'Flugverspätung',
-    theme: 'Dein Flug war über 4 Stunden verspätet.',
-    goal: 'Entschädigung oder Umbuchungsoptionen erfragen.',
-    tone: 'Höflich, aber bestimmt.',
-    sample: 'Flug EZY456 hatte 5 Stunden Verspätung. Welche Entschädigung ist möglich?'
-  },
-  'lost-luggage': {
-    label: 'Verlorenes Gepäck',
-    theme: 'Gepäck ist nicht angekommen.',
-    goal: 'Flugdaten, Gepäckbeschreibung, Kontakt angeben.',
-    tone: 'Klar und sachlich.',
-    sample: 'Gepäck fehlt aus Flug BA217. Schwarze Samsonite, Tag #9982.'
-  },
-  'travel-insurance-claim': {
-    label: 'Reiseversicherung – Schadenmeldung',
-    theme: 'Du meldest verlorene Gegenstände auf Reisen.',
-    goal: 'Details, Belege, Polizeibericht.',
-    tone: 'Formell und detailliert.',
-    sample: 'Schadenmeldung für verlorene Kamera in Paris. Polizeibericht beigefügt.'
-  },
-  'airport-transfer': {
-    label: 'Flughafentransfer',
-    theme: 'Du brauchst einen Transfer vom Flughafen zum Hotel.',
-    goal: 'Ankunftszeit, Hoteladresse, Anzahl der Passagiere.',
-    tone: 'Höflich und klar.',
-    sample: 'Abholung Heathrow um 10 Uhr, Ziel Hilton Park Lane, 2 Passagiere.'
-  },
-  'travel-advisory': {
-    label: 'Reisehinweise erfragen',
-    theme: 'Sicherheitsupdates für ein Reiseziel prüfen.',
-    goal: 'Aktuelle Risiken, Gesundheitsratschläge, Einreisebeschränkungen.',
-    tone: 'Höflich und vorsichtig.',
-    sample: 'Gibt es Reisehinweise für Thailand im November?'
-  }
-}
+  // în I18N.de
+  marketing: {
+    why: {
+      title: 'Warum uns wählen?',
+      bullets: [
+        { 
+          title: 'Üben wie im echten Leben', 
+          desc: 'Dynamische Szenarien: Interview, Verhandlung, Reise, Support, Gesundheit — realitätsnah.',
+          icon: MessageSquare 
+        },
+        { 
+          title: 'Feedback, das zählt', 
+          desc: 'Sofortige Korrekturen, Aussprachetipps, natürliche Formulierungen, Ton und Antwortvorschläge.',
+          icon: CheckCircle2 
+        },
+        { 
+          title: 'Für Konsistenz gebaut', 
+          desc: 'Szenariobibliothek, Tagesziele, messbarer Fortschritt, Empfehlungen nach Niveau.',
+          icon: Repeat 
+        }
+      ]
+    },
+    how: {
+      title: 'So funktioniert’s',
+      steps: [
+        { title: 'Szenario wählen', desc: 'Thema & Ziel festlegen (z. B. Interview, Support, Reise).' },
+        { title: 'Sprechen oder tippen', desc: 'Per Text oder Stimme chatten; die KI spielt realistische Rollen.' },
+        { title: 'Sofortige Anleitung', desc: 'Korrekturen, Alternativen, Tipps zu Aussprache und Ton.' },
+        { title: 'Fortschritt verfolgen', desc: 'Scores für Klarheit/Korrektheit/Ton, Verlauf und Ziele.' }
+      ]
+    },
+    pricing: {
+      title: 'Pläne',
+      note: 'Jederzeit wechseln. Free ohne Karte.',
+      plans: [
+        {
+          id: 'free', name: 'Free', price: '$0', period: '/Monat', cta: 'Kostenlos starten', badge: 'Start',
+          features: [
+            'Unbegrenztes Texttraining',
+            '10 KI-Rollenspiele / Monat',
+            'Basis-Korrekturen (Grammatik, Rechtschreibung)',
+            'Fortschritts-Dashboard'
+          ],
+          footnote: 'Kein Sprach-Feedback; begrenzter Szenariokatalog.'
+        },
+        {
+          id: 'premium', name: 'Premium', price: '$12', period: '/Monat', cta: 'Premium wählen', badge: 'AI',
+          features: [
+            'Alles aus Free',
+            'Unbegrenzte KI-Rollenspiele',
+            'Sprech- & Aussprache-Feedback',
+            'Kontextbewusste Vorschläge',
+            'Erweiterte Analysen & Ziele',
+            'Priorisierter Support'
+          ],
+          footnote: 'Jederzeit kündbar. Rabatte für Teams verfügbar.'
+        }
+      ]
+    },
+    faq: {
+      title: 'Häufige Fragen (FAQ)',
+      items: [
+        { q: 'Was passiert nach der Gratisphase?',
+          a: 'Nichts Schlimmes — du bleibst im Free-Plan. Du kannst jederzeit auf Premium upgraden für unbegrenzte KI-Rollenspiele und Sprech-Feedback.' },
+        { q: 'Wie hilft mir KI, schneller zu lernen?',
+          a: 'Sie gibt sofortige Korrekturen, natürliche Formulierungen und personalisierte Tipps basierend auf deinen Fehlern und Zielen.' },
+        { q: 'Kann ich die App auf dem Handy nutzen?',
+          a: 'Ja. Die Web-App läuft auf Handy und Tablet. Eine native App ist in Arbeit.' },
+      ]
+    },
+    ctaFinal: {
+      title: 'Lerne ab heute wie im echten Leben!',
+      subtitle: 'Schließe dich Tausenden an, die mit realistischen Gesprächen schneller vorankommen.',
+      button: 'Kostenloses Konto erstellen'
+    },
+    blog: {
+      title: 'Ressourcen & Tipps',
+      posts: [
+        { title: 'Wortschatz schneller behalten',
+          desc: '5 einfache Routinen für diese Woche.',
+          href: '/blog/wortschatz-behalten' },
+        { title: 'Häufigste Aussprachefehler',
+          desc: 'Die 7 Problemlaute gezielt beheben.',
+          href: '/blog/aussprachefehler-haeufig' },
+        { title: 'STAR-Antwort im Interview',
+          desc: 'Vorlage und Beispiele in 3 Minuten.',
+          href: '/blog/star-methode-interview' }
+      ]
+    },
 
+  },
 },
+
+
 };
 
 const LANG_NAMES = {
@@ -1200,6 +1584,10 @@ const LOCALIZE_SCENARIO = (s, dict) => {
   }};
 };
 
+
+
+
+
 export default function Home() {
   // === Lang state + persistence
   const [lang, setLang] = useState('fr'); // identic pe server și pe client la prima randare
@@ -1247,6 +1635,19 @@ export default function Home() {
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [langsOpen, setLangsOpen] = useState(false);
   const [altsOpen, setAltsOpen] = useState(false); // toggle simplu
+
+
+  // Contact form state
+  const [contact, setContact] = useState({ name:'', email:'', message:'' });
+
+  const submitContact = (e) => {
+    e.preventDefault();
+    const subject = `Contact lexisly.com – ${contact.name || 'Website'}`;
+    const body = `De la: ${contact.name}\nEmail: ${contact.email}\n\n${contact.message}`;
+    // mailto simplu, fără backend
+    window.location.href =
+      `mailto:office@lexisly.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
 
   // on language change: update placeholder & persist
   useEffect(() => {
@@ -1445,7 +1846,8 @@ export default function Home() {
           </nav>
         </div>
 
-        <p className={styles.subtitle}>{L.ui.subtitle}</p>
+        <h1 className={styles.subtitle}>{L.ui.subtitle}</h1>
+        <h3 className={styles.subsubtitle}>{L.ui.subsubtitle}</h3>
       </header>
 
 
@@ -1487,21 +1889,6 @@ export default function Home() {
             ) : (
               <div className={styles.emptyHint}>{L.ui.noScenarios}</div>
             )}
-            <button style={{
-              display:"flex",
-              gap:"5px",
-              alignItems:"center",
-              background:"orange",
-              color: "white",
-              fontWeight:700,
-              borderRadius: 20,
-              padding: "6px 16px",
-              margin:"-5px",
-            }}
-              className={`${styles.pill}`}
-            >
-              <Wand2 size={14} /> {L.ui.generate}
-          </button>
           </div>
         </div>
       </div>
@@ -1630,6 +2017,228 @@ export default function Home() {
           )}
         </div>
       )}
+
+
+      {/* === Why choose us === */}
+      <section className={styles.panelMarketing}>
+        <h2 className={styles.h2}>{L.marketing?.why?.title}</h2>
+        <div className={styles.cards}>
+          {L.marketing?.why?.bullets?.map((b, i) => {
+            const Icon = b.icon; // aici îl denumești Icon
+            return (
+              <article key={i} className={styles.card}>
+                <div className={styles.cardIcon}>
+                  <Icon size={52} strokeWidth={1.5} /> 
+                </div>
+                <h3>{b.title}</h3>
+                <p>{b.desc}</p>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* === How it works === */}
+      <section className={styles.panelMarketing}>
+        <h2 className={styles.h2}>{L.marketing?.how?.title}</h2>
+        <ol className={styles.steps}>
+          {L.marketing?.how?.steps?.map((s, i) => (
+            <li key={i} className={styles.step}>
+              <span className={styles.stepNum}>{i + 1}</span>
+              <div>
+                <h3>{s.title}</h3>
+                <p>{s.desc}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* === Pricing === */}
+      <section id="pricing" className={styles.panelMarketing}>
+        <h2 className={styles.h2}>{L.marketing?.pricing?.title}</h2>
+        <p className={styles.note}>{L.marketing?.pricing?.note}</p>
+        <div className={styles.planGrid}>
+          {L.marketing?.pricing?.plans?.map((p) => (
+            <article key={p.id} className={`${styles.plan} ${p.id === 'premium' ? styles.planPremium : ''}`}>
+              {p.badge ? <span className={styles.badge}>{p.badge}</span> : null}
+              <header className={styles.planHeader}>
+                <h3>{p.name}</h3>
+                <div className={styles.price}>
+                  <span>{p.price}</span><small>{p.period}</small>
+                </div>
+              </header>
+              <ul className={styles.featureList}>
+                {p.features.map((f, i) => (
+                  <li key={i}><span className={styles.check} aria-hidden>✓</span>{f}</li>
+                ))}
+              </ul>
+              {p.footnote ? <div className={styles.footnote}>{p.footnote}</div> : null}
+              <button className={styles.planCta} type="button">{p.cta}</button>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* === FAQ === */}
+      {L.marketing?.faq?.items?.length > 0 && (
+        <section className={styles.panelMarketing}>
+          <h2 className={styles.h2}>{L.marketing.faq.title}</h2>
+          <div className={styles.faq}>
+            {L.marketing.faq.items.map((it, i) => (
+              <details key={i} className={styles.faqItem}>
+                <summary className={styles.faqQ}>{it.q}</summary>
+                <div className={styles.faqA}>{it.a}</div>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* === CTA Final === */}
+      {L.marketing?.ctaFinal && (
+        <section className={`${styles.panelMarketing} ${styles.ctaFinal}`}>
+          <h2 className={styles.ctaTitle}>{L.marketing.ctaFinal.title}</h2>
+          {L.marketing.ctaFinal.subtitle ? (
+            <p className={styles.ctaSubtitle}>{L.marketing.ctaFinal.subtitle}</p>
+          ) : null}
+          <div className={styles.ctaButtons}>
+            <button className={styles.ctaBig} type="button">
+              {L.marketing.ctaFinal.button}
+            </button>
+          </div>
+        </section>
+      )}
+
+      {/* === Blog / Resurse === */}
+      {L.marketing?.blog?.posts?.length > 0 && (
+        <section className={styles.panelMarketing}>
+          <h2 className={styles.h2}>{L.marketing.blog.title}</h2>
+          <div className={styles.blogGrid}>
+            {L.marketing.blog.posts.map((p, i) => (
+              <article key={i} className={styles.post}>
+                <header className={styles.postHeader}>
+                  {/* placeholder pentru o viitoare imagine/cover */}
+                  <div className={styles.postThumb} aria-hidden />
+                  <h3 className={styles.postTitle}>
+                    {p.href ? <Link href={p.href}>{p.title}</Link> : p.title}
+                  </h3>
+                </header>
+                <p className={styles.postDesc}>{p.desc}</p>
+                {p.href ? (
+                  <Link href={p.href} className={styles.postLink}>
+                    {lang === 'ro' ? 'Citește' : lang === 'fr' ? 'Lire' : lang === 'de' ? 'Lesen' : 'Read'} →
+                  </Link>
+                ) : null}
+              </article>
+            ))}
+          </div>
+        </section>
+        )}
+
+
+        {/* === Footer === */}
+        <footer className={styles.footer} aria-labelledby="site-footer">
+          <div className={styles.footerGrid}>
+            {/* Brand + pitch scurt */}
+            <div className={styles.footerBrand}>
+              <Link href="/" className={styles.brandLink}>
+                <span className={styles.title}>lexisly.com</span>
+              </Link>
+              <p className={styles.footerTag}>
+                {L.ui.subsubtitle}
+              </p>
+            </div>
+
+            {/* Product / Links principale */}
+            <nav className={styles.footerCol} aria-label="Product">
+              <h4 className={styles.footerTitle}>Product</h4>
+              <ul className={styles.footerLinks}>
+                <li><Link href="/">{L.ui.menuHome}</Link></li>
+                <li><a href="#pricing">{L.marketing?.pricing?.title || 'Pricing'}</a></li>
+                <li><Link href="/resources/vocabulary">{L.ui.menuVocabulary}</Link></li>
+                <li><Link href="/resources/grammar">{L.ui.menuGrammar}</Link></li>
+                <li><Link href="/faq">{L.ui.menuFAQ}</Link></li>
+              </ul>
+            </nav>
+
+
+
+            {/* Limbi (schimbă limba global) */}
+            <div className={styles.footerCol}>
+              <h4 className={styles.footerTitle}>{L.ui.menuLanguages}</h4>
+              <ul className={styles.footerLinks}>
+                {LANG_ORDER.map(code=>(
+                  <li key={code}>
+                    <button
+                      type="button"
+                      className={styles.footerLinkBtn}
+                      aria-current={code===lang ? 'true' : 'false'}
+                      onClick={()=>selectLang(code)}
+                    >
+                      {LANG_NAMES[code]} {code===lang ? '•' : ''}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Formular contact -> mailto office@lexisly.com */}
+            <div className={styles.footerColWide}>
+              <h4 className={styles.footerTitle}>Contact</h4>
+              <form className={styles.footerForm} onSubmit={submitContact}>
+                <div className={styles.formRow}>
+                  <input
+                    className={styles.footerInput}
+                    type="text"
+                    name="name"
+                    placeholder="Name"
+                    value={contact.name}
+                    onChange={e=>setContact({...contact, name:e.target.value})}
+                    required
+                    aria-label="Nume"
+                  />
+                  <input
+                    className={styles.footerInput}
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    value={contact.email}
+                    onChange={e=>setContact({...contact, email:e.target.value})}
+                    required
+                    aria-label="Email"
+                  />
+                </div>
+                <textarea
+                  className={styles.footerTextarea}
+                  name="message"
+                  placeholder="Your message..."
+                  value={contact.message}
+                  onChange={e=>setContact({...contact, message:e.target.value})}
+                  required
+                  rows={4}
+                  aria-label="Mesaj"
+                />
+                <div className={styles.formActions}>
+                  <button type="submit" className={styles.footerBtn}>Send</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div className={styles.footerBottom}>
+            <div>© {new Date().getFullYear()} lexisly.com</div>
+            <div className={styles.footerLegal}>
+              <Link href="/terms">Terms</Link>
+              <Link href="/privacy">Privacy</Link>
+              <a href="mailto:office@lexisly.com">Contact</a>
+            </div>
+          </div>
+        </footer>
+
+
+
+
     </div>
   );
 }

@@ -7,7 +7,6 @@
 
 /* ===== Header + Nav ===== */
 .header{
-  position: sticky; top: 0; z-index: 5;
   background: var(--text);
   padding: 16px 0 10px;
   opacity: .9;
@@ -16,7 +15,19 @@
 
 /* Rândul de sus: logo (stânga) + meniu (dreapta) */
 .topbar{
-  display:flex; align-items:center; justify-content:flex-start; gap:16px;
+    background: var(--text);
+    justify-content: flex-start;
+    align-items: center;
+    gap: 16px;
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    max-width: 940px;
+    margin: auto;
+    padding: 20px 0;
+    z-index:1;
 }
 
 /* Brand (logo + nume) */
@@ -129,19 +140,37 @@
 
 /* Subtitlul e pe linie separată (nu influențează alinierea topbar) */
 .subtitle{
-  color: var(--muted-text);
-  font-weight: 400;
-  margin: 8px 0;
-  font-size:14px;
+  text-align: center;
+  color:white;
+  font-size:54px;
+  line-height: 60px;
+  margin-top:1.5em;
+}
+.subsubtitle {
+  color:white;
+  font-weight:100;
+  text-align: center;
+  font-size:24px;
+  line-height:36px;
 }
 
 /* ===== Responsive (mobil) ===== */
 @media (max-width: 860px){
   .subtitle{
     font-size:12px;
+    line-height: 12px;
+    color: var(--muted-text);
+    font-weight: 400;
+    margin: 8px 0;    
+    text-align: left;
+    margin-top:0.67em;
   }  
+  .subsubtitle {
+    display:none;
+  }
   .menuBtn{ display:block; }
- .topbar{ align-items: stretch; gap:10px; }
+  .header {  position: sticky; top: 0; z-index: 5; }
+ .topbar{ align-items: stretch; gap:10px; position: unset;padding:0;}
  .topbarOpen{ flex-direction: column; }  /* <— hamburger ON */
   .nav{
     display:block;
@@ -441,3 +470,308 @@
 }
 .caret{ transition: transform .2s ease; margin-top:10px; margin-left:10px; }
 .caretOpen{ transform: rotate(180deg); }
+
+
+
+/* === Marketing sections === */
+
+
+.panelMarketing{
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  margin-top:100px;
+}
+
+.h2{
+  margin: 0 0 12px;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 800;
+  color: white;
+  text-align:center;
+}
+
+.cards{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 12px;
+  text-align: center;
+}
+.card{
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: var(--shadow);
+}
+.card h3{ margin: 6px 0 6px; font-size: 16px; }
+.card p{ margin: 0; color: #374151; }
+.cardIcon{
+  width: 36px; height: 36px; border-radius: 10px;
+  display: grid; place-items: center;
+  font-weight: 800;
+  margin:auto;
+  margin-bottom:20px;
+}
+
+/* How it works */
+.steps{ list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.step{
+  display: grid; grid-template-columns: 32px 1fr; gap: 12px;
+  background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 12px;
+}
+.step h3{ margin: 0 0 4px; font-size: 15px; }
+.step p{ margin: 0; color: #374151; }
+.stepNum{
+  width: 35px; height: 50px; border-radius: 8px;
+  display: grid; place-items: center;
+  background: #eef2ff; color: var(--primary); font-weight: 800;
+  font-size: 40px;line-height: 10px;
+}
+
+/* Pricing */
+.note{ color:#6b7280; margin: 2px 0 12px;text-align:center; }
+.planGrid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 14px;
+}
+.plan{
+  background: #ffffff; border: 1px solid var(--border);
+  border-radius: 16px; padding: 16px;
+  box-shadow: var(--shadow);
+}
+.planPremium{ border-color: var(--primary); }
+.badge{
+  display:inline-block; font-size: 11px; font-weight: 800;
+  background: #f0f9ff; color: #0369a1;
+  border: 1px solid #bae6fd; border-radius: 999px;
+  padding: 2px 8px; margin-bottom: 8px;
+}
+.planHeader{
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 8px;
+}
+.price{ font-weight: 800; font-size: 24px; color: var(--primary); }
+.price small{ font-weight: 600; color:#6b7280; margin-left: 4px; }
+.featureList{ margin: 10px 0; padding-left: 0; list-style: none; display: grid; gap: 8px; }
+.featureList li{ display: flex; gap: 8px; align-items: flex-start; color:#111827; }
+.check{ color: var(--primary); font-weight: 900; }
+.footnote{ font-size: 13px; color:#6b7280; margin: 6px 0 12px; }
+.planCta{
+  width: 100%;
+  padding: 12px 14px; border-radius: 12px; border: 1px solid var(--primary);
+  background: var(--primary); color:#fff; font-weight: 800; cursor: pointer;
+}
+.planCta:hover{ background: var(--primary-700); }
+
+/* Responsive */
+@media (max-width: 860px){
+  .cards{ grid-template-columns: 1fr; }
+  .planGrid{ grid-template-columns: 1fr; }
+}
+
+
+/* ===== FAQ ===== */
+.faq {
+  display: grid;
+  gap: 10px;
+}
+.faqItem {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+.faqItem[open] { box-shadow: var(--shadow); }
+.faqQ {
+  cursor: pointer;
+  font-weight: 700;
+  color: #111827;
+  list-style: none;             /* ascunde markerul implicit */
+}
+.faqQ::-webkit-details-marker { display: none; }
+.faqQ::after {
+  content: '▾';
+  float: right;
+  transition: transform .2s ease;
+  opacity: .7;
+}
+.faqItem[open] .faqQ::after { transform: rotate(180deg); }
+.faqA {
+  margin-top: 8px;
+  color: #374151;
+}
+
+/* ===== CTA Final ===== */
+.ctaFinal {
+  background: linear-gradient(135deg, #1f2937 0%, #0b1020 100%);
+  color: #fff;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,.08);
+}
+.ctaTitle {
+  margin: 0 0 6px;
+  font-size: 26px;
+  line-height: 32px;
+  font-weight: 900;
+}
+.ctaSubtitle {
+  margin: 0 0 14px;
+  color: #e5e7eb;
+}
+.ctaButtons { display: flex; justify-content: center; }
+.ctaBig {
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--primary);
+  background: var(--primary);
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+  min-width: 220px;
+}
+.ctaBig:hover { background: var(--primary-700); }
+
+/* ===== Blog / Resurse ===== */
+.blogGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr)); /* 3 coloane */
+  gap: 12px;
+}
+.post {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 8px;
+}
+.postHeader { display: grid; gap: 8px; }
+.postThumb {
+  height: 120px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+  border: 1px solid #e5e7eb;
+}
+.postTitle { margin: 0; font-size: 16px; }
+.postTitle a { color: #0b1020; text-decoration: none; }
+.postTitle a:hover { text-decoration: underline; }
+.postDesc { margin: 0; color: #374151; }
+.postLink {
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: none;
+}
+.postLink:hover { text-decoration: underline; }
+
+@media (max-width: 1024px){
+  .blogGrid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
+@media (max-width: 860px){
+  .blogGrid { grid-template-columns: 1fr; }
+}
+
+
+
+/* Premium button = orange */
+.planPremium .planCta{
+  background: #f97316;   /* orange-500 */
+  border-color: #f97316;
+  color: #fff;
+}
+
+.planPremium .planCta:hover{
+  background: #ea580c;   /* orange-600 */
+}
+
+.planPremium .planCta:focus-visible{
+  outline: 2px solid #fdba74; /* orange-300 */
+  outline-offset: 2px;
+}
+
+/* Titlul planului Premium = orange */
+.planPremium .planHeader h3{
+  color: #f97316;    /* orange-500 */
+}
+
+
+
+/* === Footer === */
+.footer{
+  margin-top: 80px;
+  background: #0b1020;
+  color: #e5e7eb;
+  padding: 22px 20px;
+  width:100%;
+}
+.footerGrid{
+  display:grid;
+  grid-template-columns: 2fr .9fr .9fr 4fr;
+  gap: 32px;
+}
+.footerBrand .title{ color:#fff; }
+.footerTag{ margin:.5rem 0 0; color:#cbd5e1; font-size:14px; line-height:20px; }
+
+.footerCol{}
+.footerColWide{ grid-column: span 1; }
+.footerTitle{
+  font-weight:800; font-size:14px; letter-spacing:.3px;
+  color:#fff; margin: 2px 0 8px;
+}
+.footerLinks{ list-style:none; padding:0; margin:0; display:grid; gap:6px; }
+.footerLinks a{
+  color:#cbd5e1; text-decoration:none; font-size:14px; padding:2px 0;
+}
+.footerLinks a:hover{ color:#fff; text-decoration:underline; }
+
+.footerLinkBtn{
+  display:inline-block; padding:0; border:none; background:transparent;
+  color:#cbd5e1; cursor:pointer; font-size:14px; text-align:left;
+}
+.footerLinkBtn:hover{ color:#fff; text-decoration:underline; }
+
+.footerForm{ display:grid; gap:8px; }
+.formRow{ display:grid; grid-template-columns: 1fr 1fr; gap:8px; }
+.footerInput, .footerTextarea{
+  width:100%; border-radius:10px; border:1px solid rgba(255,255,255,.12);
+  background:#0f172a; color:#e5e7eb; padding:10px 12px;
+  font-size:14px; outline:none;
+}
+.footerInput::placeholder, .footerTextarea::placeholder{ color:#94a3b8; }
+.footerInput:focus, .footerTextarea:focus{
+  border-color:#334155; box-shadow: 0 0 0 3px rgba(59,130,246,.25);
+}
+.footerBtn{
+  border:1px solid #f97316; background:#f97316; color:#0b1020;
+  font-weight:800; padding:10px 14px; border-radius:10px; cursor:pointer;
+}
+.footerBtn:hover{ background:#ea580c; border-color:#ea580c; }
+.footerMail{ color:#cbd5e1; text-decoration:none; }
+.footerMail:hover{ color:#fff; text-decoration:underline; }
+.formActions{ display:flex; gap:10px; align-items:center; }
+
+.footerBottom{
+  margin-top:18px; padding-top:12px;
+  border-top:1px solid rgba(255,255,255,.08);
+  display:flex; align-items:center; justify-content:space-between;
+  color:#94a3b8; font-size:13px;
+}
+.footerLegal{ display:flex; gap:12px; }
+.footerLegal a{ color:#94a3b8; text-decoration:none; }
+.footerLegal a:hover{ color:#fff; text-decoration:underline; }
+
+/* responsive */
+@media (max-width: 980px){
+  .footerGrid{ grid-template-columns: 1fr 1fr; }
+  .footerColWide{ grid-column: 1 / -1; }
+}
+@media (max-width: 640px){
+  .footerGrid{ grid-template-columns: 1fr; }
+  .formRow{ grid-template-columns: 1fr; }
+  .footerBottom{ flex-direction:column; gap:8px; align-items:flex-start; }
+}
