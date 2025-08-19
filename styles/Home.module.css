@@ -11,6 +11,8 @@
   padding: 16px 0 10px;
   opacity: .9;
   margin: 20px 0 0 0;
+  z-index:2;
+  position: relative; 
 }
 
 /* Rândul de sus: logo (stânga) + meniu (dreapta) */
@@ -204,13 +206,29 @@
 }
 
 
-
+.startHere {
+  position: absolute;
+  right:-20px;
+  top:-20px;
+  display: flex;
+  z-index:2;
+}
+.startHere p {
+  color: orange;
+  top:-50px;
+  position: absolute;
+  right:50px;
+  width:300px;
+  text-align:right;
+  font-size:28px;
+}
 .panel{
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 20px;
   box-shadow: var(--shadow);
+  position: relative;
 }
 
 /* ===== Segments (Top categories & bottom scenarios) ===== */
@@ -569,6 +587,7 @@
 
 /* Responsive */
 @media (max-width: 860px){
+  .startHere {display:none;}
   .cards{ grid-template-columns: 1fr; }
   .planGrid{ grid-template-columns: 1fr; }
 }

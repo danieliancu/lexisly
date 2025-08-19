@@ -1,4 +1,5 @@
 // pages/index.js
+import { caveat } from '@/lib/fonts';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from '../styles/Home.module.css';
 import {
@@ -16,6 +17,7 @@ import Link from "next/link";
 const I18N = {
   fr: {
     ui: {
+      start: 'Commencez ici !',
       generate: 'Générer',
       siteTitle: 'lexisly.com',
       subtitle: 'Apprenez Français à travers des conversations réelles.',
@@ -409,6 +411,7 @@ const I18N = {
 
   en: {
     ui: {
+      start: 'Start here!',
       generate: 'Generate',
       siteTitle: 'lexisly.com',
       subtitle: 'Learn English through real-life conversations.',
@@ -549,6 +552,7 @@ const I18N = {
 
   ro: {
     ui: {
+      start: 'Începe aici!',
       generate: 'Generează',
       siteTitle: 'lexisly.com',
       subtitle: 'Învață românește prin conversații din viața reală.',
@@ -961,6 +965,7 @@ const I18N = {
 
 de: {
   ui: {
+    start: 'Hier starten!',
     generate: 'Generieren',
     siteTitle: 'lexisly.com',
     subtitle: 'Lerne Sprachen Deutsch aus dem echten Leben.',
@@ -1590,11 +1595,11 @@ const LOCALIZE_SCENARIO = (s, dict) => {
 
 export default function Home() {
   // === Lang state + persistence
-  const [lang, setLang] = useState('fr'); // identic pe server și pe client la prima randare
+  const [lang, setLang] = useState('en'); // identic pe server și pe client la prima randare
   useEffect(() => {
     try {
       const saved = localStorage.getItem('lang');
-      if (saved && saved !== 'fr') setLang(saved);
+      if (saved && saved !== 'en') setLang(saved);
     } catch {}
     }, []);
   
@@ -1854,6 +1859,16 @@ export default function Home() {
 
       {/* Categories */}
       <div className={styles.panel} aria-label="Categories">
+        <div className={styles.startHere}>
+          <p className={caveat.className}>{L.ui.start}</p>
+            <svg xmlns="http://www.w3.org/2000/svg" width="52" height="101" viewBox="0 0 52 101" fill="none">
+              <path d="M8.89495 2.24686C19.9527 1.53291 34.5287 10.8072 38.9575 18.0848C58.452 50.1189 42.6373 73.0266 13.537 93.835" stroke="#FFB300"></path>
+              <path d="M12.6584 82.2992C10.7176 101.14 5.07263 97.068 22.3138 97.2478" stroke="#FFB300"></path>
+            </svg>
+        </div>
+
+
+
         <div className={styles.segmentTop} role="tablist" aria-label={L.ui.categoriesAria}>
           {CATEGORIES.map(c => (
             <button
