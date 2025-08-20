@@ -8,12 +8,28 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
+
+
+// Poze comune pentru blog (din /public/images/blog/)
+const BLOG_MEDIA = Object.freeze({
+  'memorize-vocabulary': '/images/blog/blog-1.jpg',
+  'pronunciation-mistakes': '/images/blog/blog-2.jpg',
+  'star-interview-answer': '/images/blog/blog-3.jpg',
+});
+
+
+
 /**
  * ========= Mini i18n (scalabil pentru viitor / DB) =========
  * Pentru migrare în MySQL: tabele:
  *  - translations(lang, ns, key, value)
  *  - scenarios(id, lang, label, theme, goal, tone, sample, cat)
  */
+
+
+
+
+
 const I18N = {
   fr: {
     ui: {
@@ -391,20 +407,21 @@ const I18N = {
         subtitle: 'Rejoignez des milliers d’apprenants qui progressent grâce à des conversations réalistes.',
         button: 'Créer un compte gratuit'
       },
-      blog: {
-        title: 'Ressources & Conseils',
-        posts: [
-          { title: 'Mémoriser du vocabulaire plus vite',
-            desc: '5 routines simples à démarrer cette semaine.',
-            href: '/blog/memoriser-vocabulaire' },
-          { title: 'Les erreurs de prononciation les plus courantes',
-            desc: 'Corrigez les 7 sons qui posent le plus problème.',
-            href: '/blog/erreurs-prononciation' },
-          { title: 'Structurer une réponse STAR en entretien',
-            desc: 'Modèle + exemples concrets en 3 minutes.',
-            href: '/blog/methode-star-entretien' }
-        ]
-      },
+        blog: {
+          title: 'Ressources & Conseils',
+          posts: [
+            { id: 'memorize-vocabulary', title: 'Mémoriser du vocabulaire plus vite',
+              desc: '5 routines simples à démarrer cette semaine.',
+              href: '/fr/blog/memoriser-vocabulaire-plus-vite' },
+            { id: 'pronunciation-mistakes', title: 'Les erreurs de prononciation les plus courantes',
+              desc: 'Corrigez les 7 sons qui posent le plus problème.',
+              href: '/fr/blog/erreurs-prononciation-courantes' },
+            { id: 'star-interview-answer', title: 'Réponse STAR en entretien',
+              desc: 'Modèle + exemples concrets en 3 minutes.',
+              href: '/fr/blog/reponse-star-entretien' },
+          ]
+        },
+
     },
   },
 
@@ -532,17 +549,18 @@ const I18N = {
       blog: {
         title: 'Resources & Tips',
         posts: [
-          { title: 'Memorize vocabulary faster',
+          { id: 'memorize-vocabulary', title: 'Memorize vocabulary faster',
             desc: '5 simple routines to start this week.',
             href: '/blog/memorize-vocabulary-faster' },
-          { title: 'Common pronunciation mistakes',
+          { id: 'pronunciation-mistakes', title: 'Common pronunciation mistakes',
             desc: 'Fix the 7 sounds learners struggle with.',
             href: '/blog/common-pronunciation-mistakes' },
-          { title: 'Structure a STAR interview answer',
+          { id: 'star-interview-answer', title: 'Structure a STAR interview answer',
             desc: 'Template + concrete examples in 3 minutes.',
             href: '/blog/star-interview-answer' },
         ]
       },
+
 
 
     },
@@ -944,20 +962,21 @@ const I18N = {
         subtitle: 'Alătură-te miilor de cursanți care progresează prin conversații realiste.',
         button: 'Creează cont gratuit'
       },
-      blog: {
-        title: 'Blog & Resurse',
-        posts: [
-          { title: 'Cum să reții vocabularul mai ușor',
-            desc: '5 rutine simple pe care le poți începe săptămâna asta.',
-            href: '/blog/retine-vocabularul' },
-          { title: 'Cele mai frecvente greșeli de pronunție',
-            desc: 'Rezolvă cele 7 sunete care dau cel mai des bătăi de cap.',
-            href: '/blog/greseli-pronuntie' },
-          { title: 'Transformă orice chat în repetare spațiată',
-            desc: 'Flux simplu cu etichete și intervale.',
-            href: '/blog/repetare-spatiata-chat' },
-        ]
-      },
+        blog: {
+          title: 'Blog & Resurse',
+          posts: [
+            { id: 'memorize-vocabulary', title: 'Cum să reții vocabularul mai ușor',
+              desc: '5 rutine simple pe care le poți începe săptămâna asta.',
+              href: '/blog/retine-vocabularul' },
+            { id: 'pronunciation-mistakes', title: 'Cele mai frecvente greșeli de pronunție',
+              desc: 'Rezolvă cele 7 sunete care dau cel mai des bătăi de cap.',
+              href: '/blog/greseli-pronuntie' },
+            { id: 'star-interview-answer', title: 'Transformă orice chat în repetare spațiată',
+              desc: 'Flux simplu cu etichete și intervale.',
+              href: '/blog/repetare-spatiata-chat' },
+          ]
+        },
+
 
     },
 },
@@ -1350,17 +1369,18 @@ de: {
     blog: {
       title: 'Ressourcen & Tipps',
       posts: [
-        { title: 'Wortschatz schneller behalten',
+        { id: 'memorize-vocabulary', title: 'Wortschatz schneller behalten',
           desc: '5 einfache Routinen für diese Woche.',
           href: '/blog/wortschatz-behalten' },
-        { title: 'Häufigste Aussprachefehler',
+        { id: 'pronunciation-mistakes', title: 'Häufigste Aussprachefehler',
           desc: 'Die 7 Problemlaute gezielt beheben.',
           href: '/blog/aussprachefehler-haeufig' },
-        { title: 'STAR-Antwort im Interview',
+        { id: 'star-interview-answer', title: 'STAR-Antwort im Interview',
           desc: 'Vorlage und Beispiele in 3 Minuten.',
-          href: '/blog/star-methode-interview' }
+          href: '/blog/star-methode-interview' },
       ]
-    },
+    }
+
 
   },
 },
@@ -2134,10 +2154,16 @@ export default function Home() {
               <article key={i} className={styles.post}>
                 <header className={styles.postHeader}>
                   {/* placeholder pentru o viitoare imagine/cover */}
-                  <div className={styles.postThumb} aria-hidden />
+                  <img
+                    className={styles.postThumb}
+                    src={BLOG_MEDIA[p.id] || `/images/blog/blog-${i+1}.jpg`}
+                    alt={p.title}
+                    loading="lazy"
+                    />
                   <h3 className={styles.postTitle}>
                     {p.href ? <Link href={p.href}>{p.title}</Link> : p.title}
                   </h3>
+
                 </header>
                 <p className={styles.postDesc}>{p.desc}</p>
                 {p.href ? (

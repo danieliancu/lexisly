@@ -675,6 +675,8 @@
   border-radius: 10px;
   background: linear-gradient(135deg, #eef2ff, #e0e7ff);
   border: 1px solid #e5e7eb;
+  width:100%;
+  object-fit: cover;
 }
 .postTitle { margin: 0; font-size: 16px; }
 .postTitle a { color: #0b1020; text-decoration: none; }
@@ -793,4 +795,41 @@
   .footerGrid{ grid-template-columns: 1fr; }
   .formRow{ grid-template-columns: 1fr; }
   .footerBottom{ flex-direction:column; gap:8px; align-items:flex-start; }
+}
+
+
+
+
+
+/* --- Mobile dropdowns --- */
+@media (max-width: 900px) {
+  .dropdownBtn {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .dropdownBtn svg { transition: transform .2s ease; }
+  .dropdownBtn[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+  /* implicit ascuns pe mobil */
+  .dropdownMenu {
+    display: none;
+    max-height: 0;
+    overflow: hidden;
+    padding: 0;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: max-height .25s ease, opacity .2s ease, transform .2s ease;
+  }
+
+  /* vizibil doar când e deschis */
+  .dropdownOpen {
+    display: block;
+    max-height: 800px;       /* suficient pentru 3–6 item-uri */
+    padding: 8px;
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
