@@ -1,12 +1,8 @@
 // pages/_app.js
 import Head from "next/head";
 import "@/styles/globals.css";
-import { Poppins } from "next/font/google";
+import { poppins } from "@/lib/fonts";
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
 
 
 

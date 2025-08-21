@@ -414,9 +414,11 @@
 }
 
 .resultTitle{ font-size:20px; margin:6px 0 10px; }
+.correctedContainer {display: flex;}
 .corrected{
   background: #fafafa; border:1px solid var(--border);
   padding:16px; border-radius:12px; white-space:pre-wrap;
+  width: 50%;
 }
 
 .sectionTitle{ margin:20px 0 10px; }
@@ -590,6 +592,8 @@
   .startHere {display:none;}
   .cards{ grid-template-columns: 1fr; }
   .planGrid{ grid-template-columns: 1fr; }
+  .correctedContainer {flex-direction:column;}
+  .corrected {width:100%}
 }
 
 
@@ -738,7 +742,7 @@
 .footerBrand .title{ color:#fff; }
 .footerTag{ margin:.5rem 0 0; color:#cbd5e1; font-size:14px; line-height:20px; }
 
-.footerCol{}
+
 .footerColWide{ grid-column: span 1; }
 .footerTitle{
   font-weight:800; font-size:14px; letter-spacing:.3px;

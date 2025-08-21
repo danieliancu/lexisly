@@ -33,6 +33,7 @@ const BLOG_MEDIA = Object.freeze({
 const I18N = {
   fr: {
     ui: {
+      more:'Vous en voulez plus ? Choisissez Premium !',
       start: 'Commencez ici !',
       generate: 'Générer',
       siteTitle: 'lexisly.com',
@@ -428,6 +429,7 @@ const I18N = {
 
   en: {
     ui: {
+      more: 'Want more? Go Premium!',
       start: 'Start here!',
       generate: 'Generate',
       siteTitle: 'lexisly.com',
@@ -570,6 +572,7 @@ const I18N = {
 
   ro: {
     ui: {
+      more: 'Vrei mai mult? Alege Premium!',
       start: 'Începe aici!',
       generate: 'Generează',
       siteTitle: 'lexisly.com',
@@ -984,6 +987,7 @@ const I18N = {
 
 de: {
   ui: {
+    more: 'Mehr? Werde Premium!',
     start: 'Hier starten!',
     generate: 'Generieren',
     siteTitle: 'lexisly.com',
@@ -1598,6 +1602,114 @@ const SCENARIOS_BASE = [
     sample: `Are there any travel advisories for visiting Thailand in November?` },
 ];
 
+
+
+
+
+
+// ==== HIGHLIGHT DIFERENȚE (include și greșelile din mistakes) ====
+const escapeRegExp = (s='') => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+function tokenizeWordsWithIndex(s) {
+  const re = /\b[\p{L}\p{N}'-]+\b/gu; // cu suport Unicode
+  const out = [];
+  let m;
+  while ((m = re.exec(s)) !== null) {
+    out.push({ word: m[0], start: m.index, end: m.index + m[0].length });
+  }
+  return out;
+}
+
+function lcsMatrix(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array(m+1).fill(null).map(()=>Array(n+1).fill(0));
+  for (let i=1;i<=m;i++) {
+    for (let j=1;j<=n;j++) {
+      if (a[i-1].word.toLowerCase() === b[j-1].word.toLowerCase()) {
+        dp[i][j] = dp[i-1][j-1] + 1;
+      } else {
+        dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+      }
+    }
+  }
+  return dp;
+}
+
+function diffDeletedRanges(orig, corr) {
+  const A = tokenizeWordsWithIndex(orig);
+  const B = tokenizeWordsWithIndex(corr);
+  const dp = lcsMatrix(A,B);
+  const matched = new Array(A.length).fill(false);
+  let i = A.length, j = B.length;
+  while (i>0 && j>0) {
+    if (A[i-1].word.toLowerCase() === B[j-1].word.toLowerCase()) {
+      matched[i-1] = true; i--; j--;
+    } else if (dp[i-1][j] >= dp[i][j-1]) {
+      i--;
+    } else {
+      j--;
+    }
+  }
+  return A.filter((_, idx)=>!matched[idx]).map(t=>({start:t.start, end:t.end}));
+}
+
+function mergeRanges(ranges) {
+  if (!ranges.length) return [];
+  const arr = [...ranges].sort((a,b)=> a.start - b.start || a.end - b.end);
+  const merged = [arr[0]];
+  for (let k=1;k<arr.length;k++) {
+    const last = merged[merged.length-1], r = arr[k];
+    if (r.start <= last.end) last.end = Math.max(last.end, r.end);
+    else merged.push({...r});
+  }
+  return merged;
+}
+
+function renderRanges(text, ranges) {
+  const nodes = [];
+  let cursor = 0;
+  ranges.forEach((r, i) => {
+    if (cursor < r.start) nodes.push(text.slice(cursor, r.start));
+    nodes.push(
+      <span key={`hl-${i}`} style={{ color: 'red', textDecoration: 'line-through' }}>
+        {text.slice(r.start, r.end)}
+      </span>
+    );
+    cursor = r.end;
+  });
+  if (cursor < text.length) nodes.push(text.slice(cursor));
+  return nodes;
+}
+
+/** Evidențiază: (1) segmentele din mistakes + (2) cuvintele din original care au fost schimbate în corrected */
+function renderWithHighlightsAllChanges(sourceText='', correctedText='', mistakes=[]) {
+  const ranges = [];
+
+  // (1) din mistakes (ex: "Madrind")
+  if (Array.isArray(mistakes)) {
+    mistakes.forEach(m => {
+      const orig = (m?.original || '').trim();
+      if (!orig) return;
+      const re = new RegExp(escapeRegExp(orig), 'gi');
+      let match;
+      while ((match = re.exec(sourceText)) !== null) {
+        ranges.push({ start: match.index, end: match.index + match[0].length });
+        if (match.index === re.lastIndex) re.lastIndex++;
+      }
+    });
+  }
+
+  // (2) diferențele reale vs. textul corectat (stil, parafrazări etc.)
+  if (correctedText) {
+    ranges.push(...diffDeletedRanges(sourceText, correctedText));
+  }
+
+  if (!ranges.length) return sourceText;
+  return renderRanges(sourceText, mergeRanges(ranges));
+}
+
+
+
 const LOCALIZE_SCENARIO = (s, dict) => {
   const ov = (dict.scenarios && dict.scenarios[s.id]) || {};
   return { ...s, ...{
@@ -1616,6 +1728,8 @@ const LOCALIZE_SCENARIO = (s, dict) => {
 export default function Home() {
   // === Lang state + persistence
   const [lang, setLang] = useState('en'); // identic pe server și pe client la prima randare
+  const [submittedText, setSubmittedText] = useState('');
+
   useEffect(() => {
     try {
       const saved = localStorage.getItem('lang');
@@ -1707,25 +1821,28 @@ export default function Home() {
     setPlaceholder(current.sample);
   };
 
-  const submit = async () => {
-    if (!text.trim()) return;
-    setLoading(true);
-    setResult(null);
-    try {
-      const r = await fetch('/api/correct', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ text, scenario: scenarioId, lang })
-      });
-      const data = await r.json();
-      setResult(data);
-      setTimeout(() => correctedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
-    } catch {
-      setResult({ error: 'Network error' });
-    } finally {
-      setLoading(false);
-    }
-  };
+const submit = async () => {
+  if (!text.trim()) return;
+  setLoading(true);
+  setResult(null);
+  setSubmittedText(text); // <<— îngheață ce a trimis userul
+
+  try {
+    const r = await fetch('/api/correct', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ text, scenario: scenarioId, lang })
+    });
+    const data = await r.json();
+    setResult(data);
+    setTimeout(() => correctedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  } catch {
+    setResult({ error: 'Network error' });
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const selectLang = (code) => {
     setLang(code);
@@ -1978,27 +2095,49 @@ export default function Home() {
           {!result.error ? (
             <>
               <h2 className={styles.resultTitle}>{L.ui.corrected}</h2>
-              <div className={styles.corrected}>{result.corrected}</div>
 
-              <h3 className={styles.sectionTitle}>{L.ui.mistakes}</h3>
-              {Array.isArray(result.mistakes) && result.mistakes.length > 0 ? (
-                <div className={styles.mistakes}>
-                  {result.mistakes.map((m, i) => (
-                    <div key={i} className={styles.mistakeItem}>
-                      <span className={styles.badge}>{m.type || L.ui.style}</span>
-                      {lang === 'fr'
-                        ? <>« {m.original} » → <em>{m.fix}</em> — {m.explanation}</>
-                        : <>“{m.original}” → <em>{m.fix}</em> — {m.explanation}</>
-                      }
+              {(() => {
+                const hasMistakes = Array.isArray(result.mistakes) && result.mistakes.length > 0;
+
+                return (
+                  <>
+                    <div className={styles.correctedContainer}>
+                      {/* Stânga: originalul evidențiat — doar dacă există greșeli */}
+                      {hasMistakes && (
+                        <div className={styles.corrected}>
+                          {renderWithHighlightsAllChanges(submittedText || text, result?.corrected || '', result?.mistakes)}
+                        </div>
+                      )}
+
+                      {/* Dreapta: versiunea corectată — 100% width când nu există greșeli */}
+                      <div
+                        className={styles.corrected}
+                        style={{ color: 'white', background: 'green', width: hasMistakes ? undefined : '100%' }}
+                      >
+                        {result.corrected}
+                      </div>
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <div className={styles.mistakeItem}>
-                  <span className={styles.badge}>{L.ui.style}</span>
-                  {L.ui.noSignificantErrors}
-                </div>
-              )}
+
+                    {/* Secțiunea Mistakes — o afișăm doar dacă există elemente */}
+                    {hasMistakes && (
+                      <>
+                        <h3 className={styles.sectionTitle}>{L.ui.mistakes}</h3>
+                        <div className={styles.mistakes}>
+                          {result.mistakes.map((m, i) => (
+                            <div key={i} className={styles.mistakeItem}>
+                              <span className={styles.badge}>{m.type || L.ui.style}</span>
+                              {lang === 'fr'
+                                ? <>« {m.original} » → <em>{m.fix}</em> — {m.explanation}</>
+                                : <>“{m.original}” → <em>{m.fix}</em> — {m.explanation}</>
+                              }
+                            </div>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </>
+                );
+              })()}
 
               {/* Alternatives — toggle simplu, implicit închis */}
               <button
@@ -2046,6 +2185,9 @@ export default function Home() {
                   <div className={styles.meter}><span style={{ '--pct': pct(result.scores?.tone) }} /></div>
                 </div>
               </div>
+              <button style={{ background:"orange", display:"flex", gap:"10px",alignItems:"center", color: "white", width: "100%", marginTop:"20px", justifyContent:"center", height: "50px" }} className={`${styles.pillCategory}`}>
+                <Wand2 size={16} /> {L.ui.more}
+              </button>
             </>
           ) : (
             <div className={styles.toastErr}>{lang === 'fr' ? 'Erreur' : 'Error'} : {result.error}</div>
