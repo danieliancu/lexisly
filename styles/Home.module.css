@@ -4,6 +4,19 @@
   padding: 0 24px;
 }
 
+.transparent{
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 3;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+} 
+
 
 /* ===== Header + Nav ===== */
 .header{
@@ -29,7 +42,7 @@
     max-width: 940px;
     margin: auto;
     padding: 20px 0;
-    z-index:1;
+    z-index:4;
 }
 
 /* Brand (logo + nume) */
@@ -58,7 +71,7 @@
   right:20px;
   border:none
 }
-.menuBtn:hover{ background: rgba(255,255,255,.06); }
+
 
 /* Nav — pe desktop stă în dreapta, pe același rând cu logo-ul */
 /* împinge meniul spre dreapta; icon-urile vor sta și mai la dreapta */
@@ -160,19 +173,27 @@
 @media (max-width: 860px){
   .subtitle{
     font-size:12px;
-    line-height: 12px;
+    line-height: 0px;
     color: var(--muted-text);
     font-weight: 400;
     margin: 8px 0;    
     text-align: left;
-    margin-top:0.67em;
+    margin-top:0;
   }  
   .subsubtitle {
     display:none;
   }
   .menuBtn{ display:block; }
   .header {  position: sticky; top: 0; z-index: 5; }
- .topbar{ align-items: stretch; gap:10px; position: unset;padding:0;}
+ .topbar{
+   position: sticky;
+   align-items: stretch;
+   gap: 10px;
+   padding: 15px 0 15px;
+   left: 0;
+   top: 0px;
+   z-index: 10;
+  }
  .topbarOpen{ flex-direction: column; }  /* <— hamburger ON */
   .nav{
     display:block;
@@ -230,6 +251,7 @@
   box-shadow: var(--shadow);
   position: relative;
 }
+
 
 /* ===== Segments (Top categories & bottom scenarios) ===== */
 .segmentTop,
@@ -299,6 +321,11 @@
 }
 
 
+/* ===== Editor ===== */
+
+.editor {
+  z-index: 3;
+}
 
 /* ===== Theme card ===== */
 .theme{
@@ -308,6 +335,7 @@
   padding: 16px 18px;
   border-radius: 12px;
   animation: fadeIn .25s ease both;
+  z-index:3;
 }
 .theme strong{
   display:inline-flex; align-items:center; gap:8px;
@@ -837,3 +865,149 @@
     transform: translateY(0);
   }
 }
+
+
+
+.textarea[contenteditable="true"]:empty:before {
+  content: attr(data-placeholder);
+  opacity: .6;
+  pointer-events: none;
+}
+
+
+
+
+/* styles/AuthModal.module.css */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal {
+  width: min(92vw, 520px);
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  max-height: 90vh;
+  overflow: auto;
+}
+
+
+
+.closeBtn {
+  background: transparent;
+  border: 0;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.closeBtn:hover { opacity: 0.85; }
+.closeBtn:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 2px;
+}
+
+.note {
+  margin: 0;
+  color: #444;
+  margin-bottom: 20px;
+}
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #fafafa;
+  cursor: pointer;
+  font-weight: 600;
+  text-align: center;
+}
+
+.tab:hover { background: #f4f4f4; }
+
+.tabActive {
+  background: #fff;
+  border-color: #999;
+}
+
+.form {
+  display: grid;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.input {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  outline: none;
+  width: 100%;
+  font: inherit;
+}
+
+.input:focus {
+  border-color: #888;
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.06);
+}
+
+.primaryBtn {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 0;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.primaryBtn:hover { opacity: 0.9; }
+
+.secondaryBtn {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.secondaryBtn:hover { background: #f8f8f8; }
+
+.upgradeBtn {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 0;
+  background: orange;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.upgradeBtn:hover { filter: brightness(0.95); }
+
+.tinyNote {
+  font-size: 12px;
+  color: #666;
+  margin-top: 6px;
+  text-align: center;
+}
+

@@ -2,7 +2,7 @@
 import Head from "next/head";
 import "@/styles/globals.css";
 import { poppins } from "@/lib/fonts";
-
+import { AuthProvider } from "@/lib/auth-gate";
 
 
 
@@ -17,7 +17,9 @@ export default function App({ Component, pageProps }) {
       </Head>
 
       <main className={poppins.className}>
-        <Component {...pageProps} />
+        <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
       </main>
     </>
   );

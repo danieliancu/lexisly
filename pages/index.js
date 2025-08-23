@@ -7,6 +7,7 @@ import {
   MessageSquare, CheckCircle2, Repeat
 } from "lucide-react";
 import Link from "next/link";
+import { useAuthGate } from "@/lib/auth-gate";
 
 
 
@@ -33,6 +34,9 @@ const BLOG_MEDIA = Object.freeze({
 const I18N = {
   fr: {
     ui: {
+      theme:'Thème',
+      goal:'Objectif',
+      tone:'Ton',
       more:'Vous en voulez plus ? Choisissez Premium !',
       start: 'Commencez ici !',
       generate: 'Générer',
@@ -56,12 +60,12 @@ const I18N = {
       analyzing: 'Analyse en cours…',
       corrected: 'Correction',
       mistakes: 'Erreurs',
-      alternatives: 'Alternatives',
+      alternatives: 'Phrases suggérées',
       scores: 'Scores',
       clarity: 'Clarté',
       correctness: 'Exactitude',
       tone: 'Ton',
-      noAlternatives: 'Pas d’alternatives.',
+      noAlternatives: 'Aucune phrase suggérée.',
       noScenarios: 'Aucun scénario disponible dans cette catégorie.',
       style: 'style',
       noSignificantErrors: 'Aucune erreur significative ; seulement des choix stylistiques mineurs.',
@@ -429,6 +433,9 @@ const I18N = {
 
   en: {
     ui: {
+      theme:'Theme',
+      goal:'Goal',
+      tone:'Tone',
       more: 'Want more? Go Premium!',
       start: 'Start here!',
       generate: 'Generate',
@@ -452,12 +459,12 @@ const I18N = {
       analyzing: 'Analyzing…',
       corrected: 'Corrected',
       mistakes: 'Mistakes',
-      alternatives: 'Alternatives',
+      alternatives: 'Suggested Phrases',
       scores: 'Scores',
       clarity: 'Clarity',
       correctness: 'Correctness',
       tone: 'Tone',
-      noAlternatives: 'No alternatives.',
+      noAlternatives: 'No suggested phrases available.',
       noScenarios: 'No scenarios available in this category.',
       style: 'style',
       noSignificantErrors: 'No significant errors; minor stylistic choices only.',
@@ -572,6 +579,9 @@ const I18N = {
 
   ro: {
     ui: {
+      theme:'Temă',
+      goal:'Obiectiv',
+      tone:'Ton',
       more: 'Vrei mai mult? Alege Premium!',
       start: 'Începe aici!',
       generate: 'Generează',
@@ -595,12 +605,12 @@ const I18N = {
       analyzing: 'Analiză în curs…',
       corrected: 'Corectare',
       mistakes: 'Greșeli',
-      alternatives: 'Alternative',
+      alternatives: 'Formulări recomandate',
       scores: 'Scoruri',
       clarity: 'Claritate',
       correctness: 'Corectitudine',
       tone: 'Ton',
-      noAlternatives: 'Nicio alternativă.',
+      noAlternatives: 'Nicio formulare recomandată.',
       noScenarios: 'Nu există scenarii în această categorie.',
       style: 'stil',
       noSignificantErrors: 'Nicio eroare semnificativă; doar alegeri stilistice minore.',
@@ -987,6 +997,9 @@ const I18N = {
 
 de: {
   ui: {
+    theme:'Thema',
+    goal:'Ziel',
+    tone:'Ton',
     more: 'Mehr? Werde Premium!',
     start: 'Hier starten!',
     generate: 'Generieren',
@@ -1010,12 +1023,12 @@ de: {
     analyzing: 'Analyse läuft…',
     corrected: 'Korrektur',
     mistakes: 'Fehler',
-    alternatives: 'Alternativen',
+    alternatives: 'Empfohlene Formulierungen',
     scores: 'Bewertungen',
     clarity: 'Klarheit',
     correctness: 'Korrektheit',
     tone: 'Ton',
-    noAlternatives: 'Keine Alternativen.',
+    noAlternatives: 'Keine empfohlenen Formulierungen.',
     noScenarios: 'Keine Szenarien in dieser Kategorie.',
     style: 'Stil',
     noSignificantErrors: 'Keine bedeutenden Fehler; nur kleinere stilistische Entscheidungen.',
@@ -1726,6 +1739,9 @@ const LOCALIZE_SCENARIO = (s, dict) => {
 
 
 export default function Home() {
+
+  const { openAuthModal, shouldAllowAction, isLoggedIn } = useAuthGate();
+
   // === Lang state + persistence
   const [lang, setLang] = useState('en'); // identic pe server și pe client la prima randare
   const [submittedText, setSubmittedText] = useState('');
@@ -1768,12 +1784,16 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const correctedRef = useRef(null);
+  const editorRef = useRef(null);
+
 
   // nav states
   const [mobileOpen, setMobileOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [langsOpen, setLangsOpen] = useState(false);
   const [altsOpen, setAltsOpen] = useState(false); // toggle simplu
+  const [textFocus, setTextFocus] = useState(false);
+
 
 
   // Contact form state
@@ -1810,6 +1830,13 @@ export default function Home() {
     setPlaceholder(L.ui.placeholder);
   }, [scenarioId, L]);
 
+  useEffect(() => {
+  if (editorRef.current && editorRef.current.textContent !== text) {
+    editorRef.current.textContent = text || '';
+  }
+}, [text]);
+
+
   // helpers scoruri
   const clamp10 = (n) => Math.max(0, Math.min(10, Number(n ?? 0)));
   const pct = (n) => `${clamp10(n) * 10}%`;
@@ -1823,6 +1850,11 @@ export default function Home() {
 
 const submit = async () => {
   if (!text.trim()) return;
+  
+  // Gate: dacă ești la limită (și nu e premium), deschide modalul și oprește
+  const allowed = shouldAllowAction({ consume: true, reason: "limit" });
+  if (!allowed) return;
+  
   setLoading(true);
   setResult(null);
   setSubmittedText(text); // <<— îngheață ce a trimis userul
@@ -1853,10 +1885,17 @@ const submit = async () => {
 
   return (
     <div className={styles.wrapper}>
-
+      <div
+        className={styles.transparent}
+        style={{ display: textFocus ? 'block' : 'none' }}
+      ></div>
+      
       {/* Header */}
-      <header className={styles.header}>
-        <div className={`${styles.topbar} ${mobileOpen ? styles.topbarOpen : ''}`}>
+
+        <div
+          className={`${styles.topbar} ${mobileOpen ? styles.topbarOpen : ''}`}
+          style={{ background: textFocus ? 'black' : 'var(--text)' }}
+        >
           {/* Brand (Home) */}
           <Link
             href="/"
@@ -1872,7 +1911,11 @@ const submit = async () => {
             <button className={styles.iconBtn} aria-label="Search">
               <Search size={20} />
             </button>
-            <button className={styles.iconBtn} aria-label="Login">
+            <button
+              className={styles.iconBtn}
+              aria-label="Login"
+              onClick={() => { if (!isLoggedIn) openAuthModal("signin"); }}
+            >
               <UserRound size={20} />
             </button>
           </div>
@@ -1988,10 +2031,10 @@ const submit = async () => {
           </nav>
         </div>
 
+      <header className={styles.header}>
         <h1 className={styles.subtitle}>{L.ui.subtitle}</h1>
         <h3 className={styles.subsubtitle}>{L.ui.subsubtitle}</h3>
       </header>
-
 
 
       {/* Categories */}
@@ -2019,7 +2062,11 @@ const submit = async () => {
               {c.label}
             </button>
           ))}
-          <button style={{ background:"orange", display:"flex", gap:"10px",alignItems:"center", color: "white" }} className={`${styles.pillCategory}`}>
+          <button
+          onClick={() => openAuthModal("upgrade")}
+          style={{ background:"orange", display:"flex", gap:"10px",alignItems:"center", color: "white" }}
+          className={`${styles.pillCategory}`}
+          >
             <Wand2 size={16} /> {L.ui.generate}
           </button>
         </div>
@@ -2050,35 +2097,52 @@ const submit = async () => {
         <div className={`${styles.panel} ${styles.theme}`}>
           <div className={styles.themeHeader}>
             <span className={styles.themeLabel}><FileText size={24} strokeWidth={2} /></span>
-            <span><strong>{lang === 'fr' ? 'Thème' : 'Theme'} :</strong> {current.theme}</span>
+            <span><strong>{L.ui.theme}:</strong> {current.theme}</span>
           </div>
           <div className={styles.themeHeader} style={{ marginTop: 6 }}>
             <span className={styles.themeLabel}><Target size={24} strokeWidth={2} /></span>
-            <span><strong>{lang === 'fr' ? 'Objectif' : 'Goal'} :</strong> {current.goal}</span>
+            <span><strong>{L.ui.goal}:</strong> {current.goal}</span>
           </div>
           <div className={styles.themeHeader} style={{ marginTop: 6 }}>
             <span className={styles.themeLabel}><Drama size={24} strokeWidth={2} /></span>
-            <span><strong>{lang === 'fr' ? 'Ton' : 'Tone'} :</strong> {current.tone}</span>
+            <span><strong>{L.ui.tone}:</strong> {current.tone}</span>
           </div>
         </div>
       )}
 
       {/* Editor */}
-      <div className={styles.panel} style={{ marginTop: 18 }}>
+
+      <div className={`${styles.panel} ${styles.editor}`} style={{ marginTop: 18 }}>
         <div className={styles.controls}>
           <label htmlFor="msg" style={{fontWeight:800}}>{L.ui.editorLabel}</label>
           <button className={styles.sampleBtn} onClick={useSample} type="button">{L.ui.useSample}</button>
         </div>
-        <textarea
-          id="msg"
-          className={styles.textarea}
-          placeholder={placeholder}
-          value={text}
-          onChange={(e) => {
-            if (placeholder !== L.ui.placeholder) setPlaceholder(L.ui.placeholder);
-            setText(e.target.value);
-          }}
-        />
+<div
+  id="msg"
+  ref={editorRef}
+  role="textbox"
+  aria-multiline="true"
+  className={styles.textarea}
+  contentEditable
+  suppressContentEditableWarning
+  data-placeholder={placeholder}
+  onInput={(e) => {
+    if (placeholder !== L.ui.placeholder) setPlaceholder(L.ui.placeholder);
+    setText(e.currentTarget.textContent || '');
+  }}
+  onFocus={() => setTextFocus(true)}
+  onBlur={(e) => {
+    setTextFocus(false);
+    if ((e.currentTarget.textContent || '') === '\n') {
+      e.currentTarget.textContent = '';
+      setText('');
+    }
+  }}
+  autoCapitalize="none"
+  autoCorrect="off"
+  spellCheck={false}
+  data-form-type="other"
+/>
         <button
           className={styles.cta}
           onClick={submit}
@@ -2185,7 +2249,11 @@ const submit = async () => {
                   <div className={styles.meter}><span style={{ '--pct': pct(result.scores?.tone) }} /></div>
                 </div>
               </div>
-              <button style={{ background:"orange", display:"flex", gap:"10px",alignItems:"center", color: "white", width: "100%", marginTop:"20px", justifyContent:"center", height: "50px" }} className={`${styles.pillCategory}`}>
+              <button
+                onClick={() => openAuthModal("upgrade")}
+                style={{ background:"orange", display:"flex", gap:"10px",alignItems:"center", color: "white", width: "100%", marginTop:"20px", justifyContent:"center", height: "50px" }}
+                className={`${styles.pillCategory}`}
+              >
                 <Wand2 size={16} /> {L.ui.more}
               </button>
             </>
